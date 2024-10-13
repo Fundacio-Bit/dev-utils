@@ -1,0 +1,8 @@
+#  portainer section
+
+PORTAINER_PORT=9000
+PORTAINER_PORT_LEGACY=8000
+PORTAINER_PORT_HTTPS=9443
+
+
+# end portainer section

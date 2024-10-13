@@ -1,0 +1,24 @@
+# app section
+# See also:
+#
+# bin/compile
+# deploy/default/docker-compose.yaml
+#
+
+# See 100_app file
+
+APP_POM_FILE=$APP_PROJECT_FOLDER/pom.xml
+
+# SAR project if needed
+SAR_PROJECT_NAME=sar
+SAR_PROJECT_PATH=${PROJECT_PATH}/source/${APP_NAME}
+SAR_PROJECT_FOLDER=${SAR_PROJECT_PATH}/${SAR_PROJECT_NAME}
+SAR_POM_FILE=$SAR_PROJECT_FOLDER/pom.xml
+
+# mvn clean install files
+APP_EAR_FILE=$APP_PROJECT_FOLDER/${APP_NAME}-ear/target/$APP_PROJECT_BUNDLE_NAME.ear
+APP_SAR_FILE=$SAR_PROJECT_FOLDER/target/$APP_PROJECT_BUNDLE_NAME.sar
+
+APP_LIB_FOLDER=${APP_PROJECT_FOLDER}/${APP_NAME}-ear/src/main/docker/lib
+
+# end app section

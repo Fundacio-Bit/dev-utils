@@ -1,0 +1,10 @@
+# PYTHON section
+# See https://www.python.org
+
+PYTHON_3_11=python3.11
+PYTHON=${PYTHON_3_11}
+
+PYTHON_3_11_PATH=/usr/bin/python3.11
+PYTHON_PATH=${PYTHON_3_11_PATH}
+
+# end PYTHON section

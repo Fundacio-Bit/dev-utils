@@ -1,0 +1,19 @@
+# Projecte base section
+
+archetypeVersion=1.0.13
+perfilBack=true
+perfilFront=true
+perfilApiInterna=true
+perfilApiExterna=true
+perfilApiFirmaSimple=true
+perfilArxiu=true
+perfilRegistre=true
+perfilNotib=true
+perfilDir3Caib=true
+perfilDistribucio=true
+perfilPinbal=true
+perfilSistra2=true
+perfilWS=true
+perfilBatSh=true
+
+# end projectebase section

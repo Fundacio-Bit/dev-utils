@@ -1,0 +1,13 @@
+#!/usr/bin/env Rscript
+
+#### Description: 
+#### Written by: Guillermo de Ignacio - gdeignacio on 12-2023
+
+# https://www.r-project.org/
+# https://cloud.r-project.org/
+
+######################################
+###        ###
+######################################
+
+source('src/eda.R')
