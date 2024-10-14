@@ -1,4 +1,4 @@
-# R-project-template
+# dev-utils
 
 Env settings and command line tools for R development. Rscript, Openjdk &amp; maven.
 
@@ -19,7 +19,7 @@ These instructions will get you a copy of the project up and running on your loc
 Clone this repository on your local machine.
 
 ```bash
-git clone https://github.com/EsFumeral/R-project-template.git
+git clone https://github.com/Fundacio-Bit/dev-utils.git
 
 # Forking this repository for specific purpose app is recommended
 ```
@@ -130,7 +130,7 @@ Although is possible to config any type of parameter, passwords should never be 
 1. Clone this repository on your local machine if you didn't yet. 
 
     ```bash
-    git clone https://github.com/EsFumeral/R-project-template.git
+    git clone https://github.com/Fundacio-Bit/dev-utils.git
     ```
 
 
@@ -158,7 +158,7 @@ Although is possible to config any type of parameter, passwords should never be 
 ---
 ## Authors
 
-* **gdeignacio**  - [gdeignacio-esliceu](https://github.com/gdeignacio-esliceu)
+* **gdeignacio**  - [gdeignacio](https://github.com/gdeignacio)
 
 ## License
 
