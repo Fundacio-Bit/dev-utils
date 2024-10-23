@@ -1,7 +1,7 @@
 ###############################################################################################
-# Wildfly 14.0.1 adaptado al entorno de desarrollo del Govern de les Illes Balears (GOIB)
+# Wildfly 18.0.1.Final adaptado al entorno de desarrollo del Govern de les Illes Balears (GOIB)
 #
-# Esta versión comunitaria de Wildfly 14.0.1 corresponde con la versión de Jboss EAP 7.2
+# Esta versión comunitaria de Wildfly 18.0.1.Final corresponde con la versión de Jboss EAP 7.3
 # según la web oficial de Redhat https://access.redhat.com/solutions/21906
 #
 # Comando para construir la imagen: 
@@ -19,10 +19,27 @@
 #
 ###############################################################################################
 
-# Use latest jboss/base-jdk:11 image as the base
-FROM jboss/base-jdk:11
+# By default, build on JDK 11 on UBI 9.
+ARG jdk=11
+# Red Hat UBI 9 (ubi9-minimal) should be used on JDK 11 and later.
+ARG dist=ubi9-minimal
+FROM eclipse-temurin:${jdk}-${dist}
 
 LABEL MAINTAINER="Govern de les Illes Balears <suport@caib.es>"
+
+LABEL org.opencontainers.image.source=https://github.com/jboss-dockerfiles/wildfly org.opencontainers.image.title=wildfly org.opencontainers.imag.url=https://github.com/jboss-dockerfiles/wildfly org.opencontainers.image.vendor=WildFly
+
+# Starting on jdk 17 eclipse-temurin is based on ubi9-minimal version 9.3 
+#   that doesn't includes shadow-utils package that provides groupadd & useradd commands
+# Conditional RUN: IF no groupadd AND microdnf THEN: update, install shadow-utils, clean
+RUN if ! [ -x "$(command -v groupadd)" ] && [ -x "$(command -v microdnf)" ]; then microdnf update -y && microdnf install --best --nodocs -y shadow-utils && microdnf clean all; fi
+
+WORKDIR /opt/jboss
+
+RUN groupadd -r jboss -g 1000 && useradd -u 1000 -r -g jboss -m -d /opt/jboss -s /sbin/nologin -c "JBoss user" jboss && \
+    chmod 755 /opt/jboss
+
+
 
 ARG KEYCLOAK_URI_ARG=http://keycloak-goib:8180
 
@@ -41,8 +58,8 @@ ENV WILDFLY_VERSION=18.0.1.Final \
 
 USER root
 
-RUN yum -y update && \
-    yum -y install glibc-common glibc-locale-source && \
+RUN microdnf -y update && \
+    microdnf -y install glibc-common glibc-locale-source && \
     localedef -i es_ES -f UTF-8 es_ES.UTF-8
 
 ENV LANG=es_ES.UTF-8 \

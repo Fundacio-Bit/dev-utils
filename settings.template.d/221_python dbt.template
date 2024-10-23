@@ -1,0 +1,6 @@
+# DBT section
+
+DBT_LOGS=${PROJECT_PATH}/../data/var/log/dbt/${APP_PROJECT_NAME}
+
+
+# end DBT section
