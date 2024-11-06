@@ -65,7 +65,7 @@ echo ${APPS_PATH}
 
 for START in ${START_ARRAY[*]}; do
     echo Executing $START
-    cd ${APPS_PATH}/${START}/jee-app-dist
+    cd ${APPS_PATH}/${START}/dev-utils
     echo Current folder is $(pwd)
     echo
     bin/docker_start.sh&
