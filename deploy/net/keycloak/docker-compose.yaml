@@ -2,8 +2,7 @@ version: '3.2'
 name: keycloak
 services:
   keycloak:
-    build:
-      context: ${DOCKER_PROJECT_PATH}/builds/keycloak-dist
+    image: quay.io/keycloak/keycloak:24.0.1
     container_name: keycloak-${APP_PROJECT_NAME}
     hostname: keycloak-${APP_PROJECT_DOCKER_SERVER_NAME}
     environment:
@@ -21,9 +20,12 @@ services:
      - KC_DB_PASSWORD=${KEYCLOAK_DB_PASSWORD}
      - KC_HOSTNAME=${KEYCLOAK_HOST_SERVER}
      - KC_HEALTH_ENABLED=${KEYCLOAK_HEALTH_ENABLED}
+     - KC_METRICS_ENABLED=true
      - KC_HTTPS_CERTIFICATE_FILE=${KEYCLOAK_HTTPS_CERTIFICATE_FILE}
      - KC_HTTPS_CERTIFICATE_KEY_FILE=${KEYCLOAK_HTTPS_CERTIFICATE_KEY_FILE}
-     - KC_HTTP_RELATIVE_PATH=/keycloak
+     - KC_HTTP_RELATIVE_PATH=${KEYCLOAK_HTTP_RELATIVE_PATH}
+     - KC_HTTP_PORT=8180
+     - KC_HTTPS_PORT=8543
      #- KC_PROXY=${KEYCLOAK_PROXY}
      #- KC_HOSTNAME_STRICT=${KEYCLOAK_HOSTNAME_STRICT}
      #- KC_HOSTNAME_STRICT_HTTPS=${KEYCLOAK_HOSTNAME_STRICT_HTTPS}
@@ -31,33 +33,20 @@ services:
     ports:
       - ${KEYCLOAK_PORT}:8180
       - ${KEYCLOAK_HTTPS_PORT}:8543
-  # keycloak:
-  #   #image: keycloak/keycloak:18.0
-  #   build:
-  #     context: ${DOCKER_PROJECT_PATH}/builds/keycloak-dist
-  #   container_name: keycloak-${APP_PROJECT_NAME}
-  #   hostname: keycloak-${APP_PROJECT_DOCKER_SERVER_NAME}
-  #   environment:
-  #    - KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN_USER}
-  #    - KEYCLOAK_PASSWORD=${KEYCLOAK_ADMIN_PASS}
-  #    - KEYCLOAK_IMPORT=/tmp/import-goib-realm.json
-  #   ports:
-  #    - ${KEYCLOAK_PORT}:8180
-  #    - ${KEYCLOAK_HTTPS_PORT}:8443
+    command: ["start", "--verbose"]
     volumes: 
       - ${APP_FILES_BASE_FOLDER}/../../../main/1.0.0/data/assets/ssl/${NGINX_SSL_NAMESERVER}.crt:${KEYCLOAK_HTTPS_CERTIFICATE_FILE}:ro
       - ${APP_FILES_BASE_FOLDER}/../../../main/1.0.0/data/assets/ssl/${NGINX_SSL_NAMESERVER}.key:${KEYCLOAK_HTTPS_CERTIFICATE_KEY_FILE}:ro
       - ${APP_FILES_BASE_FOLDER}/var/keycloak/log:/app/keycloak/var/log
-    healthcheck:
-      test: ["CMD", "curl", "-f", "https://${KEYCLOAK_SERVER_BASE_URL}/health"]
-      interval: 10s
-      timeout: 10s
-      retries: 5
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "${KEYCLOAK_SERVER_BASE_URL}/keycloak/health"]
+    #   interval: 10s
+    #   timeout: 10s
+    #   retries: 5
   app-db:
     image: postgres:15.2-alpine
     container_name: ${APP_PROJECT_NAME}-pg
     hostname: ${APP_PROJECT_DOCKER_SERVER_NAME}-pg
-    #restart: always
     ports:
       - ${PG_PORT}:5432
     volumes:
