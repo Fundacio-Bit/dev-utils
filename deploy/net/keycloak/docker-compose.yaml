@@ -33,6 +33,9 @@ services:
     ports:
       - ${KEYCLOAK_PORT}:8180
       - ${KEYCLOAK_HTTPS_PORT}:8543
+    extra_hosts:
+      - "${KEYCLOAK_HOST_SERVER}:${KEYCLOAK_HOST_IP}"
+    user: root
     command: ["start", "--verbose"]
     volumes: 
       - ${APP_FILES_BASE_FOLDER}/../../../main/1.0.0/data/assets/ssl/${NGINX_SSL_NAMESERVER}.crt:${KEYCLOAK_HTTPS_CERTIFICATE_FILE}:ro
