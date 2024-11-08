@@ -19,6 +19,7 @@ services:
      - APP_PACKAGE_NAME=${APP_PACKAGE_NAME}
     ports:
      - ${WILDFLY_PORT}:8080
+     - ${WILDFLY_HTTPS_PORT}:8443
      - ${WILDFLY_ADMIN_PORT}:9990
     volumes:
      - ${WILDFLY_DEPLOY_DIR}:/opt/jboss/wildfly/standalone/deployments
