@@ -143,6 +143,9 @@ COPY ./wildfly/bin/logger-add-offline.cli bin
  RUN bin/jboss-cli.sh --file=bin/logger-add-offline.cli && \
     rm bin/logger-add-offline.cli
 
+
+
+    
 ######################################################################################################
 
 RUN rm -rf standalone/configuration/standalone_xml_history/current

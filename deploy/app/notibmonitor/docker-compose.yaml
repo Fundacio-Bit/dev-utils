@@ -17,12 +17,13 @@ services:
      - SHORT_APP_NAME_UPPER=${SHORT_APP_NAME_UPPER}
      - APP_DOMAIN_NAME=${APP_DOMAIN_NAME}
      - APP_PACKAGE_NAME=${APP_PACKAGE_NAME}
+     #- WILDFLY_USER=${LONG_APP_NAME_LOWER}
+     #- WILDFLY_PASSWORD=${LONG_APP_NAME_LOWER}
+     #- WILDFLY_GROUPS=${SHORT_APP_NAME_LOWER}_ADMIN,${SHORT_APP_NAME_LOWER}_USER
     ports:
      - ${WILDFLY_PORT}:8080
      - ${WILDFLY_HTTPS_PORT}:8443
      - ${WILDFLY_ADMIN_PORT}:9990
-    extra_hosts:
-      - "${WILDFLY_HOST_SERVER}:${WILDFLY_HOST_IP}"
     volumes:
      - ${WILDFLY_DEPLOY_DIR}:/opt/jboss/wildfly/standalone/deployments
      #- ${WILDFLY_LIB_DIR}/backoffice.jar:/opt/jboss/wildfly/standalone/lib/backoffice.jar:ro
