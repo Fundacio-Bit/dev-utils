@@ -97,13 +97,19 @@ cat ${OPENSSL_CERTS_PATH}/${NAMESERVER}.key >> ${OPENSSL_CERTS_PATH}/${NAMESERVE
 echo "generating jks"
 $KEYTOOL -genkeypair -alias ${ALIAS} -keyalg RSA -keysize 4096 -dname "${DNAME}" -validity 1000 -keypass ${PASS} -keystore ${OPENSSL_CERTS_PATH}/${NAMESERVER}.jks -storepass ${PASS} -storetype JKS -noprompt
 
-echo "importing certificates to jks"
-$KEYTOOL -importcert -noprompt -alias ${ALIAS} -keypass ${PASS} -file ${OPENSSL_CERTS_PATH}/${NAMESERVER}.crt -keystore ${OPENSSL_CERTS_PATH}/${NAMESERVER}trust.jks -storepass ${PASS}
+
+# Importar el certificado de la CA en el almacén de confianza de Java
+echo "importing CA certificate into JKS"
+$KEYTOOL -import -trustcacerts -alias ${NAMECA} -file ${OPENSSL_CERTS_PATH}/${NAMECA}ca.pem -keystore ${OPENSSL_CERTS_PATH}/${NAMESERVER}.jks -storepass ${PASS} -noprompt
+
+# Importar el certificado del servidor en el almacén de confianza de Java
+echo "importing server certificate into JKS"
+$KEYTOOL -import -alias ${NAMESERVER} -file ${OPENSSL_CERTS_PATH}/${NAMESERVER}.crt -keystore ${OPENSSL_CERTS_PATH}/${NAMESERVER}.jks -storepass ${PASS} -noprompt
 
 
-#cp ${OPENSSL_CERTS_PATH}/${NAMESERVER}.jks ${OPENSSL_CERTS_PATH}/${NAMESERVER}trust.jks
 
-mv ${OPENSSL_CERTS_PATH}/${NAMESERVER}*.jks ${APP_FILES_BASE_FOLDER}/firma
+
+cp ${OPENSSL_CERTS_PATH}/${NAMESERVER}.jks ${OPENSSL_CERTS_PATH}/${NAMESERVER}trust.jks
 
 # echo "generating server store csr"
 # $KEYTOOL -certreq -v -alias ${NAMESERVER} -keystore ${OPENSSL_CERTS_PATH}/${NAMESERVER}.jks -storepass ${PASS} -file ${OPENSSL_CERTS_PATH}/${NAMESERVER}keystore.csr
