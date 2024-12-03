@@ -22,8 +22,8 @@ FROM quay.io/keycloak/keycloak:24.0.1
 # Enable health and metrics support
 ENV KC_HEALTH_ENABLED=true
 ENV KC_METRICS_ENABLED=true
-ENV KC_HTTP_PORT=8180
-ENV KC_HTTPS_PORT=8543
+ENV KC_HTTP_PORT=8080
+ENV KC_HTTPS_PORT=8443
 
 # WORKDIR /opt/keycloak
 # # for demonstration purposes only, please make sure to use proper certificates in production instead
@@ -64,7 +64,7 @@ ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
 
 # RUN rm -rf keycloak/standalone/configuration/standalone_xml_history/current
 
-EXPOSE 8180 8543
+EXPOSE 8080 8443
 
 # CMD ["start -b 0.0.0.0 -bmanagement 0.0.0.0 -Djboss.socket.binding.port-offset=100"]
 
