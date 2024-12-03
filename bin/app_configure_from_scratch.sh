@@ -146,6 +146,23 @@ else
     $PROJECT_PATH/bin/nginx_deploysetup.sh
 fi
 
+echo ""
+echo "Setting up dbt"
+CFPATH=$DBT_PROFILES_DIR
+echo "Processing: "$CFPATH
+SETTINGS_FOLDER=$CFPATH
+
+echo ""
+
+if [ -d "$SETTINGS_FOLDER" ]; then
+    ### Take no action if $DIR exists ###
+    echo "Skipping ${SETTINGS_FOLDER} creation. Folder already exists."
+else
+    ###  Control will jump here if dir does NOT exists ###
+    echo "${SETTINGS_FOLDER} not found. Creating ..."
+    $PROJECT_PATH/bin/dbt_deploysetup.sh
+fi
+
 
 if [ -d "${APP_FILES_BASE_FOLDER}/${APP_PROJECT_SGBD}" ]; then
     ### Take no action if $DIR exists ###

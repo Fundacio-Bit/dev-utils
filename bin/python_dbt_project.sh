@@ -38,10 +38,9 @@ echo ""
 source $PROJECT_PATH/bin/lib_string_utils.sh 
 source $PROJECT_PATH/bin/lib_env_utils.sh
 
+
 lib_env_utils.loadenv ${PROJECT_PATH}
 echo ""
-
-
 
 
 isLinux=$(lib_env_utils.check_os)
@@ -96,40 +95,17 @@ else
   echo "help.txt no existe"
 fi
 
-if [ "$APP_PROJECT_FOLDER" == "" ]; then
-  # Project dir value is empty
-  echo  =================================================================
-  echo    Definex la variable d\'entorn APP_PROJECT_FOLDER apuntant al
-  echo    directori del projecte a generar.
-  echo  =================================================================
-  # End of not project section
-else
-  # Project dir value is informed
-  echo on
-  # Check if APP_FOLDER directory exists 
-  if [ -d "$APP_PROJECT_FOLDER" ]; then
-    ### Take action if $DIR exists ###
-    echo --------- La carpeta $APP_PROJECT_FOLDER existeix  ---------
-  else
-    ###  Control will jump here if dir does NOT exists ###
-    echo "${APP_PROJECT_FOLDER} not found. Creating ..."
-    mkdir -p $APP_PROJECT_FOLDER
-  fi
-
-#cd $PROJECT_PATH/..
 cd $APP_PROJECT_PATH
 
-#dbt-init --client acme_corp --warehouse snowflake --target-dir ~/clients/
+# Create the dbt project
 
-# Initialize the dbt project with all options
-dbt-init --client "${DBT_CLIENT}" --warehouse "${DBT_WAREHOUSE}" --target-dir "${APP_PROJECT_FOLDER}" --profile "${DBT_PROFILE}" --project-name "${DBT_PROJECT_NAME}" --adapter "${DBT_ADAPTER}"
+dbt init --skip-profile-setup --profiles-dir ${DBT_PROFILES_DIR} ${DBT_PROJECT_NAME} 
 
-
+# end of project dir creation
+    
 cd $PROJECT_PATH
-
-
-### END ###
 
 # Deactivate the virtual environment
 deactivate
-echo "Virtual environment deactivated."
+
+#End of script

@@ -96,6 +96,7 @@ builds/wildfly-dist/wildfly/lib
 builds/keycloak-dist/keycloak/conf
 builds/keycloak-dist/keycloak/bin
 builds/nginx-dist/nginx/conf
+builds/dbt-dist/dbt/profiles
 settings/
 .exported/
 data/
