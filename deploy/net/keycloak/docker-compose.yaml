@@ -36,7 +36,7 @@ services:
       - ${KEYCLOAK_PORT}:8080
       - ${KEYCLOAK_HTTPS_PORT}:8443
     extra_hosts:
-      - "${KEYCLOAK_HOST_SERVER}:192.168.31.180"
+      - "${KEYCLOAK_HOST_SERVER}:${KEYCLOAK_HOST_IP}"
     user: root
     command: ["start", "--verbose"]
     volumes: 
