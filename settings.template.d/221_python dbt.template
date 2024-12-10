@@ -2,5 +2,13 @@
 
 DBT_LOGS=${PROJECT_PATH}/../data/var/log/dbt/${APP_PROJECT_NAME}
 
+#DBT_CLIENT=$APP_DOMAIN_NAME
+#DBT_WAREHOUSE=snowflake
+#DBT_TARGET_DIR=${APP_PROJECT_FOLDER}-dbt
+
+#DBT_PROFILE="your_profile"
+DBT_PROJECT_NAME=${APP_PROJECT_NAME}_dbt
+DBT_PROFILES_DIR=${PROJECT_PATH}/builds/dbt-dist/dbt/profiles
+#DBT_ADAPTER=postgres
 
 # end DBT section
