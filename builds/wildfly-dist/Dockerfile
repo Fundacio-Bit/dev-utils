@@ -144,6 +144,11 @@ COPY ./wildfly/bin/logger-add-offline.cli bin
     rm bin/logger-add-offline.cli
 
 
+# Ajp connector settings
+COPY ./wildfly/bin/ajp-add-offline.cli bin
+ RUN bin/jboss-cli.sh --file=bin/ajp-add-offline.cli && \
+    rm bin/ajp-add-offline.cli
+
 
     
 ######################################################################################################
@@ -152,7 +157,7 @@ RUN rm -rf standalone/configuration/standalone_xml_history/current
 
 #COPY ./wildfly/files/goibusuari.ear ${JBOSS_HOME}/standalone/deployments/
 
-EXPOSE 8080 8443 9990
+EXPOSE 8080 8443 9990 8009
 ENTRYPOINT ["/bin/bash", "-c"]
 
 CMD ["bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0"]
