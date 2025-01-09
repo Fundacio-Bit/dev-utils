@@ -2,7 +2,9 @@ version: '3.2'
 name: main
 services:
   nginx:
-    image: nginx
+    #image: nginx
+    build:
+      context: ${DOCKER_PROJECT_PATH}/builds/nginx-dist
     container_name: nginx-${APP_PROJECT_NAME}
     hostname: nginx-${APP_PROJECT_DOCKER_SERVER_NAME}
     #restart: always
