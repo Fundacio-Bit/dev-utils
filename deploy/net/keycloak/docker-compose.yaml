@@ -6,11 +6,14 @@ services:
     container_name: keycloak-${APP_PROJECT_NAME}
     hostname: keycloak-${APP_PROJECT_DOCKER_SERVER_NAME}
     environment:
+     - TZ=Europe/Madrid
      - KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN_USER}
      - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASS}
      - KC_LOG=console,file
      - KC_LOG_FILE=/app/keycloak/var/log/keycloak.log
-     - KC_LOGLEVEL=${KEYCLOAK_LOG_LEVEL}
+     - KC_LOG_CONSOLE_LEVEL=${KEYCLOAK_LOG_CONSOLE_LEVEL}
+     - KC_LOG_FILE_LEVEL=${KEYCLOAK_LOG_FILE_LEVEL}
+     - KC_LOG_LEVEL=${KEYCLOAK_LOG_LEVEL}
      - KC_DB=${KEYCLOAK_DB}
      - KC_DB_URL_HOST=${KEYCLOAK_DB_URL_HOST}
      - KC_DB_URL_PORT=${KEYCLOAK_DB_URL_PORT}
