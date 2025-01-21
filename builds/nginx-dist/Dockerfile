@@ -3,9 +3,14 @@ FROM nginx:1.26.2
 
 # Actualiza los paquetes e instala nginx-extras
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends alien dpkg-dev debhelper build-essential curl && \
+    apt-get install -y --no-install-recommends alien dpkg-dev debhelper build-essential curl tzdata && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
+
+# Configurar la zona horaria a CET
+RUN ln -fs /usr/share/zoneinfo/Europe/Madrid /etc/localtime && \
+    dpkg-reconfigure -f noninteractive tzdata
+
 
 RUN curl -O https://extras.getpagespeed.com/fedora/41/x86_64/RPMS/nginx-module-ajp-1.26.2+0.3.3-8.fc41.gps.x86_64.rpm  \
     && alien -k nginx-module-ajp-1.26.2+0.3.3-8.fc41.gps.x86_64.rpm \
