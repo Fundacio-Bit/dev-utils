@@ -62,9 +62,14 @@ RUN microdnf -y update && \
     microdnf -y install glibc-common glibc-locale-source && \
     localedef -i es_ES -f UTF-8 es_ES.UTF-8
 
+RUN microdnf -y install tzdata && microdnf -y update && microdnf -y reinstall tzdata && \
+    cp -fs /usr/share/zoneinfo/Europe/Madrid /etc/localtime && \
+    echo "Europe/Madrid" > /etc/timezone
+
 ENV LANG=es_ES.UTF-8 \
     LANGUAGE=es_ES:es \
-    LC_ALL=es_ES.UTF-8
+    LC_ALL=es_ES.UTF-8 \
+    TZ=Europe/Madrid
 
 # Add the WildFly distribution to /opt, and make wildfly the owner of the extracted tar content
 # Make sure the distribution is available from a well-known place
@@ -115,21 +120,23 @@ RUN bin/jboss-cli.sh --file=bin/driver-oracle-install-offline.cli && \
 #     rm bin/driver-sqlserver-install-offline.cli
 
 # Wildfly-Keycloak connector
-RUN curl -L https://downloads.jboss.org/keycloak/${KEYCLOAK_VERSION}/adapters/keycloak-oidc/keycloak-wildfly-adapter-dist-${KEYCLOAK_VERSION}.tar.gz | tar zx &&\
-    bin/jboss-cli.sh --file=bin/adapter-install-offline.cli
-COPY ./wildfly/bin/goibusuari-add-keycloak-offline.cli bin
-RUN sed -i "s/<resolve-parameter-values>false<\/resolve-parameter-values>/ <resolve-parameter-values>true<\/resolve-parameter-values>/" bin/jboss-cli.xml &&\ 
-    bin/jboss-cli.sh --file=bin/goibusuari-add-keycloak-offline.cli --properties=/tmp/env.properties
+
+# RUN curl -L https://downloads.jboss.org/keycloak/${KEYCLOAK_VERSION}/adapters/keycloak-oidc/keycloak-wildfly-adapter-dist-${KEYCLOAK_VERSION}.tar.gz | tar zx &&\
+#     bin/jboss-cli.sh --file=bin/adapter-elytron-install-offline.cli
+# COPY ./wildfly/bin/goibusuari-add-keycloak-offline.cli bin
+# RUN sed -i "s/<resolve-parameter-values>false<\/resolve-parameter-values>/ <resolve-parameter-values>true<\/resolve-parameter-values>/" bin/jboss-cli.xml &&\ 
+#     bin/jboss-cli.sh --file=bin/goibusuari-add-keycloak-offline.cli --properties=/tmp/env.properties
+
+RUN bin/add-user.sh -a -u u999000 -p u999000 -g EBO_ADMIN,EBO_USER,NBM_ADMIN,NBM_USER
 
 COPY ./wildfly/bin/add-system-properties.cli bin
 RUN bin/jboss-cli.sh --file=bin/add-system-properties.cli && \
     rm bin/add-system-properties.cli
 
- # Log settings
- COPY ./wildfly/bin/https-add-offline.cli bin
- RUN bin/jboss-cli.sh --file=bin/https-add-offline.cli && \
+# Log settings
+COPY ./wildfly/bin/https-add-offline.cli bin
+RUN bin/jboss-cli.sh --file=bin/https-add-offline.cli && \
     rm bin/https-add-offline.cli
-
 
 # Project lombok
 # RUN curl -OL https://repo1.maven.org/maven2/org/projectlombok/lombok/${LOMBOK_VERSION}/lombok-${LOMBOK_VERSION}.jar
