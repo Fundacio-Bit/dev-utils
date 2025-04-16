@@ -1,5 +1,0 @@
-# DBT section
-
-AIRFLOW_LOGS=${PROJECT_PATH}/../data/var/log/airflow/${APP_PROJECT_NAME}
-
-# end DBT section
