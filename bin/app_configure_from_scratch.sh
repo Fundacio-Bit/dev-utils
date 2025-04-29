@@ -160,7 +160,8 @@ if [ -d "$SETTINGS_FOLDER" ]; then
 else
     ###  Control will jump here if dir does NOT exists ###
     echo "${SETTINGS_FOLDER} not found. Creating ..."
-    $PROJECT_PATH/bin/dbt_deploysetup.sh
+    # On probation
+    #$PROJECT_PATH/bin/dbt_deploysetup.sh
 fi
 
 

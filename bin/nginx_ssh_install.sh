@@ -42,8 +42,6 @@ source $PROJECT_PATH/bin/lib_env_utils.sh
 
 lib_env_utils.loadenv ${PROJECT_PATH}
 echo ""
-lib_env_utils.check_os
-echo ""
 
 isLinux=$(lib_env_utils.check_os)
 echo $isLinux

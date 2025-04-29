@@ -58,6 +58,21 @@ else
     fi
 fi
 
+if [ "$NGINX_SSL_CONF_FILE" == "" ]; then
+    # Deploy dir value is empty
+    echo  =================================================================
+    echo    Definex la variable d\'entorn NGINX_SSL_CONF_FILE apuntant al
+    echo    directori de configuracio del NGINX 
+    echo  =================================================================
+else
+    if [[ -f "$TEMPLATE_FOLDER/$NGINX_SSL_CONF_FILE" ]]; then
+        echo Copying $TEMPLATE_FOLDER/$NGINX_SSL_CONF_FILE to $NGINX_CONF_PATH
+        mkdir -p $SETTINGS_FOLDER
+        cp $TEMPLATE_FOLDER/$NGINX_SSL_CONF_FILE $SETTINGS_FOLDER/openssl.conf
+    fi
+fi
+
+
 
 echo ""
 
