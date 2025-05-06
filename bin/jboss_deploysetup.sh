@@ -90,7 +90,8 @@ for CFPATH in ${CONF_PATH_ARRAY[*]}; do
         FILENAME=${MASK##*/}
         NEWFILE=$SETTINGS_FOLDER/$FILENAME
         echo "Transforming filename from $FILE to $NEWFILE"
-        cp $FILE $NEWFILE
+        #cp $FILE $NEWFILE
+        envsubst < $FILE > $NEWFILE
     done
 
 done

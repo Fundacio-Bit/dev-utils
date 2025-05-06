@@ -15,11 +15,11 @@
 
 embed-server --server-config=${server.config:standalone.xml}
 
-/core-service=management/security-realm=ApplicationRealm/server-identity=ssl:write-attribute(name=keystore-path, value="pinbal.jks")
+/core-service=management/security-realm=ApplicationRealm/server-identity=ssl:write-attribute(name=keystore-path, value="${NGINX_SSL_NAMESERVER}.jks")
 /core-service=management/security-realm=ApplicationRealm/server-identity=ssl:write-attribute(name=keystore-relative-to, value="jboss.server.config.dir")
-/core-service=management/security-realm=ApplicationRealm/server-identity=ssl:write-attribute(name=keystore-password, value="pass")
-/core-service=management/security-realm=ApplicationRealm/server-identity=ssl:write-attribute(name=alias, value="alias")
-/core-service=management/security-realm=ApplicationRealm/server-identity=ssl:write-attribute(name=key-password, value="password")
+/core-service=management/security-realm=ApplicationRealm/server-identity=ssl:write-attribute(name=keystore-password, value="${NGINX_KEYSTORE_PASS}")
+/core-service=management/security-realm=ApplicationRealm/server-identity=ssl:write-attribute(name=alias, value="${NGINX_SSL_DST_ALIAS}")
+/core-service=management/security-realm=ApplicationRealm/server-identity=ssl:write-attribute(name=key-password, value="${NGINX_KEYSTORE_PASS}")
 /core-service=management/security-realm=ApplicationRealm/server-identity=ssl:undefine-attribute(name=generate-self-signed-certificate-host)
 
 stop-embedded-server
