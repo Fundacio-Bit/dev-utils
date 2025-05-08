@@ -121,13 +121,13 @@ RUN bin/jboss-cli.sh --file=bin/driver-oracle-install-offline.cli && \
 
 # Wildfly-Keycloak connector
 
-# RUN curl -L https://downloads.jboss.org/keycloak/${KEYCLOAK_VERSION}/adapters/keycloak-oidc/keycloak-wildfly-adapter-dist-${KEYCLOAK_VERSION}.tar.gz | tar zx &&\
-#     bin/jboss-cli.sh --file=bin/adapter-elytron-install-offline.cli
-# COPY ./wildfly/bin/goibusuari-add-keycloak-offline.cli bin
-# RUN sed -i "s/<resolve-parameter-values>false<\/resolve-parameter-values>/ <resolve-parameter-values>true<\/resolve-parameter-values>/" bin/jboss-cli.xml &&\ 
-#     bin/jboss-cli.sh --file=bin/goibusuari-add-keycloak-offline.cli --properties=/tmp/env.properties
+ RUN curl -L https://downloads.jboss.org/keycloak/${KEYCLOAK_VERSION}/adapters/keycloak-oidc/keycloak-wildfly-adapter-dist-${KEYCLOAK_VERSION}.tar.gz | tar zx &&\
+     bin/jboss-cli.sh --file=bin/adapter-elytron-install-offline.cli
+ COPY ./wildfly/bin/goibusuari-add-keycloak-offline.cli bin
+ RUN sed -i "s/<resolve-parameter-values>false<\/resolve-parameter-values>/ <resolve-parameter-values>true<\/resolve-parameter-values>/" bin/jboss-cli.xml &&\ 
+     bin/jboss-cli.sh --file=bin/goibusuari-add-keycloak-offline.cli --properties=/tmp/env.properties
 
-RUN bin/add-user.sh -a -u u999000 -p u999000 -g EBO_ADMIN,EBO_USER,NBM_ADMIN,NBM_USER
+# RUN bin/add-user.sh -a -u u999000 -p u999000 -g EBO_ADMIN,EBO_USER,NBM_ADMIN,NBM_USER
 
 COPY ./wildfly/bin/add-system-properties.cli bin
 RUN bin/jboss-cli.sh --file=bin/add-system-properties.cli && \
