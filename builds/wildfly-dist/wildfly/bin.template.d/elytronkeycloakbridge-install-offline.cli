@@ -1,0 +1,3 @@
+embed-server --server-config=${server.config:standalone.xml}
+/subsystem=ee:write-attribute(name=global-modules,value=[{name=>"org.fundaciobit.elytronkeycloakbridge",slot=>"main"}])
+stop-embedded-server

@@ -1,7 +1,7 @@
 ###############################################################################################
-# Wildfly 18.0.1.Final adaptado al entorno de desarrollo del Govern de les Illes Balears (GOIB)
+# Wildfly 26.0.1.Final adaptado al entorno de desarrollo del Govern de les Illes Balears (GOIB)
 #
-# Esta versión comunitaria de Wildfly 18.0.1.Final corresponde con la versión de Jboss EAP 7.3
+# Esta versión comunitaria de Wildfly 26.0.1.Final corresponde con la versión de Jboss EAP 7.4
 # según la web oficial de Redhat https://access.redhat.com/solutions/21906
 #
 # Comando para construir la imagen: 
@@ -43,8 +43,8 @@ RUN groupadd -r jboss -g 1000 && useradd -u 1000 -r -g jboss -m -d /opt/jboss -s
 
 ARG KEYCLOAK_URI_ARG=http://keycloak-goib:8180
 
-ENV WILDFLY_VERSION=18.0.1.Final \
-    WILDFLY_SHA1=ef0372589a0f08c36b15360fe7291721a7e3f7d9 \
+ENV WILDFLY_VERSION=26.0.1.Final \
+    WILDFLY_SHA1=08908faf9ae99e5fb6374979afbffea461aadc2c \
     # WILDFLY_SHA1=757d89d86d01a9a3144f34243878393102d57384 \
     JBOSS_HOME=/opt/jboss/wildfly \
     ADMIN_USER=admin \
@@ -73,8 +73,12 @@ ENV LANG=es_ES.UTF-8 \
 
 # Add the WildFly distribution to /opt, and make wildfly the owner of the extracted tar content
 # Make sure the distribution is available from a well-known place
+
+# curl -L -O -A "Mozilla/5.0" https://github.com/wildfly/wildfly/releases/download/27.0.0.Final/wildfly-27.0.0.Final.tar.gz
+
+
 RUN cd $HOME \
-    && curl -O https://download.jboss.org/wildfly/$WILDFLY_VERSION/wildfly-$WILDFLY_VERSION.tar.gz \
+    && curl -L -O -A "Mozilla/5.0" https://github.com/wildfly/wildfly/releases/download/$WILDFLY_VERSION/wildfly-$WILDFLY_VERSION.tar.gz \
     && sha1sum wildfly-$WILDFLY_VERSION.tar.gz | grep $WILDFLY_SHA1 \
     && tar xf wildfly-$WILDFLY_VERSION.tar.gz \
     && mv $HOME/wildfly-$WILDFLY_VERSION $JBOSS_HOME \
@@ -121,11 +125,19 @@ RUN bin/jboss-cli.sh --file=bin/driver-oracle-install-offline.cli && \
 
 # Wildfly-Keycloak connector
 
- RUN curl -L https://downloads.jboss.org/keycloak/${KEYCLOAK_VERSION}/adapters/keycloak-oidc/keycloak-wildfly-adapter-dist-${KEYCLOAK_VERSION}.tar.gz | tar zx &&\
-     bin/jboss-cli.sh --file=bin/adapter-elytron-install-offline.cli
- COPY ./wildfly/bin/goibusuari-add-keycloak-offline.cli bin
- RUN sed -i "s/<resolve-parameter-values>false<\/resolve-parameter-values>/ <resolve-parameter-values>true<\/resolve-parameter-values>/" bin/jboss-cli.xml &&\ 
-     bin/jboss-cli.sh --file=bin/goibusuari-add-keycloak-offline.cli --properties=/tmp/env.properties
+# RUN curl -L https://downloads.jboss.org/keycloak/${KEYCLOAK_VERSION}/adapters/keycloak-oidc/keycloak-wildfly-adapter-dist-${KEYCLOAK_VERSION}.tar.gz | tar zx &&\
+#      bin/jboss-cli.sh --file=bin/adapter-elytron-install-offline.cli
+# COPY ./wildfly/bin/goibusuari-add-keycloak-offline.cli bin
+# RUN sed -i "s/<resolve-parameter-values>false<\/resolve-parameter-values>/ <resolve-parameter-values>true<\/resolve-parameter-values>/" bin/jboss-cli.xml &&\ 
+#      bin/jboss-cli.sh --file=bin/goibusuari-add-keycloak-offline.cli --properties=/tmp/env.properties
+
+COPY ./wildfly/bin/elytronkeycloakbridge-install-offline.cli bin
+RUN bin/jboss-cli.sh --file=bin/elytronkeycloakbridge-install-offline.cli && \
+    rm bin/elytronkeycloakbridge-install-offline.cli
+
+COPY ./wildfly/bin/goibusuari-add-keycloak-offline.cli bin
+RUN bin/jboss-cli.sh --file=bin/goibusuari-add-keycloak-offline.cli && \
+    rm bin/goibusuari-add-keycloak-offline.cli
 
 # RUN bin/add-user.sh -a -u u999000 -p u999000 -g EBO_ADMIN,EBO_USER,NBM_ADMIN,NBM_USER
 

@@ -1,9 +1,26 @@
-embed-server --server-config=${server.config:standalone.xml}
-/subsystem=keycloak/realm=GOIB:add(auth-server-url=${KEYCLOAK_URI_ARG},ssl-required=EXTERNAL)
-/subsystem=keycloak/secure-deployment=${LONG_APP_NAME_LOWER}-api-interna.war:\
-add(realm=GOIB,resource=goib-ws,use-resource-role-mappings=true,bearer-only=true,enable-basic-auth=true,principal-attribute=preferred_username)
-/subsystem=keycloak/secure-deployment=${LONG_APP_NAME_LOWER}-api-interna.war/credential=secret:\
-  add(value=e73e8e95-d88c-42bf-a76b-273be6708018)
-/subsystem=keycloak/secure-deployment=${LONG_APP_NAME_LOWER}-back.war:\
-add(realm=GOIB,resource=goib-default,use-resource-role-mappings=true,public-client=true,verify-token-audience=true,principal-attribute=preferred_username)
+# embed-server --server-config=${server.config:standalone.xml}
+# /subsystem=keycloak/realm=GOIB:add(auth-server-url=${KEYCLOAK_URI_ARG},ssl-required=EXTERNAL)
+# /subsystem=keycloak/secure-deployment=${LONG_APP_NAME_LOWER}-api-interna.war:\
+# add(realm=GOIB,resource=goib-ws,use-resource-role-mappings=true,bearer-only=true,enable-basic-auth=true,principal-attribute=preferred_username)
+# /subsystem=keycloak/secure-deployment=${LONG_APP_NAME_LOWER}-api-interna.war/credential=secret:\
+#   add(value=e73e8e95-d88c-42bf-a76b-273be6708018)
+# /subsystem=keycloak/secure-deployment=${LONG_APP_NAME_LOWER}-back.war:\
+# add(realm=GOIB,resource=goib-default,use-resource-role-mappings=true,public-client=true,verify-token-audience=true,principal-attribute=preferred_username)
+# stop-embedded-server
+
+embed-server --server-config=standalone.xml
+
+# # Añadir el subsistema solo si no existe
+# if (outcome != success) of /subsystem=elytron-oidc-client:read-resource
+#     /subsystem=elytron-oidc-client:add
+# end-if
+
+# Configurar para notibmonitor-api-interna.war (modo bearer-only)
+/subsystem=elytron-oidc-client/secure-deployment=${LONG_APP_NAME_LOWER}-api-interna.war:add(client-id=goib-ws,provider-url=${KEYCLOAK_URI_ARG}/realms/GOIB,bearer-only=true,principal-attribute=preferred_username)
+
+# Configurar para notibmonitor-back.war (cliente público)
+/subsystem=elytron-oidc-client/secure-deployment=${LONG_APP_NAME_LOWER}-back.war:add(client-id=goib-default,provider-url=${KEYCLOAK_URI_ARG}/realms/GOIB,public-client=true,verify-token-audience=true,principal-attribute=preferred_username)
+
 stop-embedded-server
+
+

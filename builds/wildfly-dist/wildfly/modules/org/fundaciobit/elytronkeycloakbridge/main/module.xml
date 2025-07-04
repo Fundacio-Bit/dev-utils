@@ -1,0 +1,10 @@
+<module xmlns="urn:jboss:module:1.5" name="org.fundaciobit.elytronkeycloakbridge">
+  <resources>
+    <resource-root path="KeycloakAuthServletExtension.jar"/>
+  </resources>
+  <dependencies>
+    <module name="io.undertow.core"/>
+    <module name="io.undertow.servlet"/>
+    <module name="javax.servlet.api"/>
+  </dependencies>
+</module>
