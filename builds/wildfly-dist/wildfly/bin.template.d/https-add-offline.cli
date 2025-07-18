@@ -24,18 +24,39 @@
 
 # stop-embedded-server
 
+
+
 embed-server --server-config=standalone.xml
-if (outcome != success) of /subsystem=elytron/key-store=${NGINX_SSL_DST_ALIAS}KeyStore:read-resource
-/subsystem=elytron/key-store=${NGINX_SSL_DST_ALIAS}KeyStore:add(path=firma/${NGINX_SSL_NAMESERVER}.p12,relative-to=jboss.server.config.dir,credential-reference={clear-text="${NGINX_KEYSTORE_PASS}"},type=pkcs12)
+
+if (outcome != success) of /subsystem=elytron/key-store=${NGINX_SSL_DST_ALIAS}KeyStore:read-resource 
+/subsystem=elytron/key-store=${NGINX_SSL_DST_ALIAS}KeyStore:add(path=ssl/${NGINX_SSL_NAMESERVER}.p12, relative-to=jboss.server.config.dir, credential-reference={clear-text="${NGINX_KEYSTORE_PASS}"}, type=PKCS12) 
 end-if
-if (outcome != success) of /subsystem=elytron/key-manager=${NGINX_SSL_DST_ALIAS}KeyManager:read-resource
-/subsystem=elytron/key-manager=${NGINX_SSL_DST_ALIAS}KeyManager:add(key-store=${NGINX_SSL_DST_ALIAS}KeyStore,credential-reference={clear-text="${NGINX_KEYSTORE_PASS}"},alias-filter=${NGINX_SSL_DST_ALIAS})
+
+if (outcome != success) of /subsystem=elytron/key-manager=${NGINX_SSL_DST_ALIAS}KeyManager:read-resource 
+/subsystem=elytron/key-manager=${NGINX_SSL_DST_ALIAS}KeyManager:add(key-store=${NGINX_SSL_DST_ALIAS}KeyStore, credential-reference={clear-text="${NGINX_KEYSTORE_PASS}"}, alias-filter="${NGINX_SSL_DST_ALIAS}") 
 end-if
-if (outcome != success) of /subsystem=elytron/server-ssl-context=${NGINX_SSL_DST_ALIAS}SSLContext:read-resource
-/subsystem=elytron/server-ssl-context=${NGINX_SSL_DST_ALIAS}SSLContext:add(key-manager=${NGINX_SSL_DST_ALIAS}KeyManager,protocols=["TLSv1.2"])
+
+if (outcome != success) of /subsystem=elytron/key-store=${NGINX_SSL_DST_ALIAS}TrustStore:read-resource 
+/subsystem=elytron/key-store=${NGINX_SSL_DST_ALIAS}TrustStore:add(path=ssl/${NGINX_SSL_NAMESERVER}trust.jks, relative-to=jboss.server.config.dir, credential-reference={clear-text="${NGINX_KEYSTORE_PASS}"}, type=JKS) 
 end-if
-if (outcome != success) of /subsystem=undertow/server=default-server/https-listener=https:read-attribute(name=ssl-context)
-/subsystem=undertow/server=default-server/https-listener=https:write-attribute(name=ssl-context,value=${NGINX_SSL_DST_ALIAS}SSLContext)
+
+if (outcome != success) of /subsystem=elytron/trust-manager=${NGINX_SSL_DST_ALIAS}TrustManager:read-resource 
+/subsystem=elytron/trust-manager=${NGINX_SSL_DST_ALIAS}TrustManager:add(key-store=${NGINX_SSL_DST_ALIAS}TrustStore) 
 end-if
+
+if (outcome != success) of /subsystem=elytron/server-ssl-context=${NGINX_SSL_DST_ALIAS}SSLContext:read-resource 
+/subsystem=elytron/server-ssl-context=${NGINX_SSL_DST_ALIAS}SSLContext:add(key-manager=${NGINX_SSL_DST_ALIAS}KeyManager, trust-manager=${NGINX_SSL_DST_ALIAS}TrustManager, protocols=["TLSv1.3", "TLSv1.2"]) 
+else 
+/subsystem=elytron/server-ssl-context=${NGINX_SSL_DST_ALIAS}SSLContext:write-attribute(name=key-manager, value=${NGINX_SSL_DST_ALIAS}KeyManager) 
+/subsystem=elytron/server-ssl-context=${NGINX_SSL_DST_ALIAS}SSLContext:write-attribute(name=trust-manager, value=${NGINX_SSL_DST_ALIAS}TrustManager) 
+/subsystem=elytron/server-ssl-context=${NGINX_SSL_DST_ALIAS}SSLContext:write-attribute(name=protocols, value=["TLSv1.3", "TLSv1.2"]) 
+end-if
+
+if (outcome != success) of /subsystem=undertow/server=default-server/https-listener=https:read-resource 
+/subsystem=undertow/server=default-server/https-listener=https:add(socket-binding=https, ssl-context=${NGINX_SSL_DST_ALIAS}SSLContext) 
+else 
+/subsystem=undertow/server=default-server/https-listener=https:write-attribute(name=ssl-context, value=${NGINX_SSL_DST_ALIAS}SSLContext)
+end-if
+
 stop-embedded-server
 

@@ -174,9 +174,17 @@ COPY ./wildfly/bin/ajp-add-offline.cli bin
 
 RUN rm -rf standalone/configuration/standalone_xml_history/current
 
+
+COPY docker-entrypoint.sh /opt/jboss/
+RUN chmod +x /opt/jboss/docker-entrypoint.sh
+
 #COPY ./wildfly/files/goibusuari.ear ${JBOSS_HOME}/standalone/deployments/
 
 EXPOSE 8080 8443 9990 8009
-ENTRYPOINT ["/bin/bash", "-c"]
 
-CMD ["bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0"]
+ENTRYPOINT ["/opt/jboss/docker-entrypoint.sh"]
+
+
+#ENTRYPOINT ["/bin/bash", "-c"]
+
+#CMD ["bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0"]
