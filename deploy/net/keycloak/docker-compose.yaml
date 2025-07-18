@@ -22,10 +22,12 @@ services:
      - KC_DB_USERNAME=${KEYCLOAK_DB_USER}
      - KC_DB_PASSWORD=${KEYCLOAK_DB_PASSWORD}
      - KC_HOSTNAME=${KEYCLOAK_HOST_SERVER}
+     #- KC_HOSTNAME_URL=https://${KEYCLOAK_URI_ARG}
+     #- KC_HOSTNAME_ADMIN_URL=https://${KEYCLOAK_URI_ARG}
      - KC_HEALTH_ENABLED=${KEYCLOAK_HEALTH_ENABLED}
      - KC_METRICS_ENABLED=true
      - KC_HTTPS_KEY_STORE_FILE=${KEYCLOAK_HTTPS_KEY_STORE_FILE}
-     - KC_HTTPS_kEY_STORE_PASSWORD=${KEYCLOAK_HTTPS_KEY_STORE_PASSWORD}
+     - KC_HTTPS_KEY_STORE_PASSWORD=${KEYCLOAK_HTTPS_KEY_STORE_PASSWORD}
      #- KC_HTTPS_CERTIFICATE_FILE=${KEYCLOAK_HTTPS_CERTIFICATE_FILE}
      #- KC_HTTPS_CERTIFICATE_KEY_FILE=${KEYCLOAK_HTTPS_CERTIFICATE_KEY_FILE}
      - KC_HTTP_RELATIVE_PATH=${KEYCLOAK_HTTP_RELATIVE_PATH}
@@ -35,6 +37,7 @@ services:
      - KC_HOSTNAME_STRICT=${KEYCLOAK_HOSTNAME_STRICT}
      - KC_HOSTNAME_STRICT_HTTPS=${KEYCLOAK_HOSTNAME_STRICT_HTTPS}
      - KC_PROXY_HEADERS=${KEYCLOAK_PROXY_HEADERS}
+     - KC_TRUSTSTORE_PATHS=/opt/keycloak/conf/truststores/
     ports:
       - ${KEYCLOAK_PORT}:8080
       - ${KEYCLOAK_HTTPS_PORT}:8443
@@ -45,13 +48,14 @@ services:
     volumes: 
       - ${APP_FILES_BASE_FOLDER}/../../../main/1.0.0/data/assets/ssl/${NGINX_SSL_NAMESERVER}.crt:${KEYCLOAK_HTTPS_CERTIFICATE_FILE}:ro
       - ${APP_FILES_BASE_FOLDER}/../../../main/1.0.0/data/assets/ssl/${NGINX_SSL_NAMESERVER}.key:${KEYCLOAK_HTTPS_CERTIFICATE_KEY_FILE}:ro
-      - ${APP_FILES_BASE_FOLDER}/../../../main/1.0.0/data/firma/${NGINX_SSL_NAMESERVER}.jks:${KEYCLOAK_HTTPS_KEY_STORE_FILE}:ro
+      - ${APP_FILES_BASE_FOLDER}/../../../main/1.0.0/data/assets/ssl/${NGINX_SSL_NAMESERVER}.p12:${KEYCLOAK_HTTPS_KEY_STORE_FILE}:ro
+      - ${APP_FILES_BASE_FOLDER}/../../../main/1.0.0/data/assets/ssl/${NGINX_SSL_NAMESERVER}.pem:${KEYCLOAK_HTTPS_TRUST_STORE_FILE}:ro
       - ${APP_FILES_BASE_FOLDER}/var/keycloak/log:/app/keycloak/var/log
-    # healthcheck:
-    #   test: ["CMD", "curl", "-f", "${KEYCLOAK_SERVER_BASE_URL}/keycloak/health"]
-    #   interval: 10s
-    #   timeout: 10s
-    #   retries: 5
+    healthcheck:
+      test: ["CMD", "curl", "-f", "https://localhost:8443/keycloak/health"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
   app-db:
     image: postgres:15.2-alpine
     container_name: ${APP_PROJECT_NAME}-pg

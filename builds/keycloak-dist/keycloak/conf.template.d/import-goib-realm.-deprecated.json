@@ -11,37 +11,17 @@
             "implicitFlowEnabled": false,
             "directAccessGrantsEnabled": true,
             "authorizationServicesEnabled": false,
-            "rootUrl": "http://app.domain/",
+            "rootUrl": "/goib-default",
             "redirectUris": [
-                "https://app.domain/*",
-                "http://app.domain/*"
+                "*"
             ],
-            "adminUrl": "https://app.domain:8443/keycloak",
+            "adminUrl": "/goib-default",
             "webOrigins": [
                 "*"
             ],
             "attributes": {
                 "login_theme": "keycloak"
-            },
-            "protocolMappers": [
-                {
-                    "name": "client roles",
-                    "protocol": "openid-connect",
-                    "protocolMapper": "oidc-usermodel-client-role-mapper",
-                    "consentRequired": false,
-                    "config": {
-                        "introspection.token.claim": "true",
-                        "multivalued": "true",
-                        "userinfo.token.claim": "false",
-                        "id.token.claim": "true",
-                        "lightweight.claim": "false",
-                        "access.token.claim": "true",
-                        "claim.name": "resource_access.${client_id}.roles",
-                        "jsonType.label": "String",
-                        "usermodel.clientRoleMapping.clientId": "goib-default"
-          }
-        }
-            ]
+            }
         },
         {
             "clientId": "goib-ws",
@@ -50,7 +30,7 @@
             "clientAuthenticatorType": "client-secret",
             "secret": "e73e8e95-d88c-42bf-a76b-273be6708018",
             "bearerOnly" : true,
-            "publicClient": false,
+            "publicClient": true,
             "standardFlowEnabled": true,
             "implicitFlowEnabled": false,
             "directAccessGrantsEnabled": true,
@@ -79,11 +59,11 @@
             ],
             "clientRoles": {
                     "goib-default": [
-                        "EBO_SUPERVISOR", "NBM_USER", "NBM_ADMIN"
+                        "EBO_SUPERVISOR"
                     ]
             }
         },
-        {   
+        {
             "username": "$GOIB_USUARI",
             "enabled": true,
             "credentials": [
@@ -94,12 +74,12 @@
             ],
             "clientRoles": {
                     "goib-ws": [
-                        "EBO_SUPERVISOR", "NBM_USER", "NBM_ADMIN"
+                        "EBO_SUPERVISOR"
                     ]
             }
         }
     ],
-    "roles": {  
+    "roles": {
         "client": {
             "goib-default": [
                 {
@@ -107,40 +87,14 @@
                    "description": "Administrator privileges",
                    "composite": false,
                    "clientRole": true
-                },
-                {
-                   "name": "NBM_ADMIN",
-                   "description": "EmiservBackoffice Administrador",
-                   "composite": false,
-                   "clientRole": true
-                },
-                {
-                   "name": "NBM_USER",
-                   "description": "EmiservBackoffice Usuari",
-                   "composite": false,
-                   "clientRole": true
-                }
-                ],
+                }],
             "goib-ws": [
                 {
                    "name": "EBO_SUPERVISOR",
                    "description": "Administrator privileges",
                    "composite": false,
                    "clientRole": true
-                },
-                {
-                    "name": "NBM_ADMIN",
-                    "description": "EmiservBackoffice Administrador",
-                    "composite": false,
-                    "clientRole": true
-                 },
-                 {
-                    "name": "NBM_USER",
-                    "description": "EmiservBackoffice Usuari",
-                    "composite": false,
-                    "clientRole": true
-                 }
-                ]
+                }]
         }
     }
 }
