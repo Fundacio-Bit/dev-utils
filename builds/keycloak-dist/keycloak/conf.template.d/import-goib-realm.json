@@ -11,12 +11,12 @@
             "implicitFlowEnabled": false,
             "directAccessGrantsEnabled": true,
             "authorizationServicesEnabled": false,
-            "rootUrl": "http://app.domain/",
+            "rootUrl": "http://${NGINX_HOST_SERVER}/",
             "redirectUris": [
-                "https://app.domain/*",
-                "http://app.domain/*"
+                "https://${NGINX_HOST_SERVER}/*",
+                "http://${NGINX_HOST_SERVER}/*"
             ],
-            "adminUrl": "https://app.domain:8443/keycloak",
+            "adminUrl": "${KEYCLOAK_URI_ARG_HOST}",
             "webOrigins": [
                 "*"
             ],
@@ -48,7 +48,7 @@
             "description": "Autenticación de servicios API REST (entorno de desarrollo local)",
             "enabled": true,
             "clientAuthenticatorType": "client-secret",
-            "secret": "e73e8e95-d88c-42bf-a76b-273be6708018",
+            "secret": "${KEYCLOAK_APP_USER_SECRET}",
             "bearerOnly" : true,
             "publicClient": false,
             "standardFlowEnabled": true,
@@ -66,20 +66,20 @@
     ],
     "users": [
         {
-            "username": "u999000",
+            "username": "${KEYCLOAK_APP_USER}",
             "enabled": true,
-            "firstName": "NomUsuari",
-            "lastName": "LlinatgeUsuari",
-            "email":"u999000@caib.es",
+            "firstName": "Usuari",
+            "lastName": "Goib",
+            "email":"${KEYCLOAK_APP_USER_EMAIL}",
             "credentials": [
                 {
                     "type": "password",
-                    "value": "u999000"
+                    "value": "${KEYCLOAK_APP_USER_PASS}"
                 }
             ],
             "clientRoles": {
                     "goib-default": [
-                        "EBO_SUPERVISOR", "NBM_USER", "NBM_ADMIN"
+                        "EBO_SUPERVISOR", "EMS_RESP", "EMS_ADMIN", "EBO_USER", "EBO_ADMIN", "ECD_USER", "ECD_ADMIN"
                     ]
             }
         },
@@ -94,7 +94,7 @@
             ],
             "clientRoles": {
                     "goib-ws": [
-                        "EBO_SUPERVISOR", "NBM_USER", "NBM_ADMIN"
+                        "EBO_SUPERVISOR"
                     ]
             }
         }
@@ -109,14 +109,38 @@
                    "clientRole": true
                 },
                 {
-                   "name": "NBM_ADMIN",
+                   "name": "EMS_ADMIN",
+                   "description": "Emiserv Administrador",
+                   "composite": false,
+                   "clientRole": true
+                },
+                {
+                   "name": "EMS_RESP",
+                   "description": "Emiserv Responsable",
+                   "composite": false,
+                   "clientRole": true
+                },
+                {
+                   "name": "EBO_USER",
                    "description": "EmiservBackoffice Administrador",
                    "composite": false,
                    "clientRole": true
                 },
                 {
-                   "name": "NBM_USER",
+                   "name": "EBO_ADMIN",
                    "description": "EmiservBackoffice Usuari",
+                   "composite": false,
+                   "clientRole": true
+                },
+                {
+                   "name": "ECD_USER",
+                   "description": "EmiservCedent Administrador",
+                   "composite": false,
+                   "clientRole": true
+                },
+                {
+                   "name": "ECD_ADMIN",
+                   "description": "EmiservCedent Usuari",
                    "composite": false,
                    "clientRole": true
                 }
@@ -127,20 +151,7 @@
                    "description": "Administrator privileges",
                    "composite": false,
                    "clientRole": true
-                },
-                {
-                    "name": "NBM_ADMIN",
-                    "description": "EmiservBackoffice Administrador",
-                    "composite": false,
-                    "clientRole": true
-                 },
-                 {
-                    "name": "NBM_USER",
-                    "description": "EmiservBackoffice Usuari",
-                    "composite": false,
-                    "clientRole": true
-                 }
-                ]
+                }]
         }
     }
 }
