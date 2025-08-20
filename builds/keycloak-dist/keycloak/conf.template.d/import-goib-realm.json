@@ -36,7 +36,7 @@
                         "id.token.claim": "true",
                         "lightweight.claim": "false",
                         "access.token.claim": "true",
-                        "claim.name": "resource_access.${client_id}.roles",
+                        "claim.name": "${KEYCLOAK_CLIENT_CLAIM_NAME}",
                         "jsonType.label": "String",
                         "usermodel.clientRoleMapping.clientId": "goib-default"
           }

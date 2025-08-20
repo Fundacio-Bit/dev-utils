@@ -68,14 +68,16 @@ for CFPATH in ${CONF_PATH_ARRAY[*]}; do
                 if [[ -f "${TEMPLATE_FOLDER}/import-goib-realm.json" ]]; then
                     echo Copying default $TEMPLATE_FOLDER/import-goib-realm.json to $KEYCLOAK_DEPLOYCONF_PATH
                     mkdir -p $SETTINGS_FOLDER
-                    cp $TEMPLATE_FOLDER/import-goib-realm.json $SETTINGS_FOLDER/import-goib-realm.json
+                    #cp $TEMPLATE_FOLDER/import-goib-realm.json $SETTINGS_FOLDER/import-goib-realm.json
+                    envsubst < $TEMPLATE_FOLDER/import-goib-realm.json > $SETTINGS_FOLDER/import-goib-realm.json
                 fi
 
                 if [[ -f "$TEMPLATE_FOLDER/$KEYCLOAK_IMPORT_REALM_JSON" ]]; then
                     rm $SETTINGS_FOLDER/import-goib-realm.json
                     echo Copying $TEMPLATE_FOLDER/$KEYCLOAK_IMPORT_REALM_JSON to $KEYCLOAK_DEPLOYCONF_PATH
                     mkdir -p $SETTINGS_FOLDER
-                    cp $TEMPLATE_FOLDER/$KEYCLOAK_IMPORT_REALM_JSON $SETTINGS_FOLDER/import-goib-realm.json        
+                    #cp $TEMPLATE_FOLDER/$KEYCLOAK_IMPORT_REALM_JSON $SETTINGS_FOLDER/import-goib-realm.json
+                    envsubst < $TEMPLATE_FOLDER/$KEYCLOAK_IMPORT_REALM_JSON > $SETTINGS_FOLDER/import-goib-realm.json
                 fi
 
             fi
@@ -88,7 +90,8 @@ for CFPATH in ${CONF_PATH_ARRAY[*]}; do
             FILENAME=${MASK##*/}
             NEWFILE=$SETTINGS_FOLDER/$FILENAME
             echo "Transforming filename from $FILE to $NEWFILE"
-            cp $FILE $NEWFILE
+            #cp $FILE $NEWFILE
+            envsubst < $FILE > $NEWFILE
         fi
 
        

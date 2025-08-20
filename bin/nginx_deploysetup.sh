@@ -54,7 +54,8 @@ else
     if [[ -f "$TEMPLATE_FOLDER/$NGINX_CONF_FILE" ]]; then
         echo Copying $TEMPLATE_FOLDER/$NGINX_CONF_FILE to $NGINX_CONF_PATH
         mkdir -p $SETTINGS_FOLDER
-        cp $TEMPLATE_FOLDER/$NGINX_CONF_FILE $SETTINGS_FOLDER/default.conf
+        #cp $TEMPLATE_FOLDER/$NGINX_CONF_FILE $SETTINGS_FOLDER/default.conf
+        envsubst < $TEMPLATE_FOLDER/$NGINX_CONF_FILE > $SETTINGS_FOLDER/default.conf
     fi
 fi
 
@@ -68,7 +69,8 @@ else
     if [[ -f "$TEMPLATE_FOLDER/$NGINX_OPENSSL_CONF_FILE" ]]; then
         echo Copying $TEMPLATE_FOLDER/$NGINX_OPENSSL_CONF_FILE to $NGINX_CONF_PATH
         mkdir -p $SETTINGS_FOLDER
-        cp $TEMPLATE_FOLDER/$NGINX_OPENSSL_CONF_FILE $SETTINGS_FOLDER/openssl.conf
+        #cp $TEMPLATE_FOLDER/$NGINX_OPENSSL_CONF_FILE $SETTINGS_FOLDER/openssl.conf
+        envsubst < $TEMPLATE_FOLDER/$NGINX_OPENSSL_CONF_FILE > $SETTINGS_FOLDER/openssl.conf
     fi
 fi
 
