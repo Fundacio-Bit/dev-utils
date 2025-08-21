@@ -43,6 +43,7 @@ echo "Processing: "$CFPATH
 TEMPLATE_FOLDER=$CFPATH.template.d
 SETTINGS_FOLDER=$CFPATH
 
+FILTER_VARS='${NGINX_HOST_SERVER} ${NGINX_SSL_NAMESERVER} ${KEYCLOAK_SERVER_BASE_URL} ${WILDFLY_HOST_SERVER}'
 
 if [ "$NGINX_CONF_FILE" == "" ]; then
     # Deploy dir value is empty
@@ -55,7 +56,7 @@ else
         echo Copying $TEMPLATE_FOLDER/$NGINX_CONF_FILE to $NGINX_CONF_PATH
         mkdir -p $SETTINGS_FOLDER
         #cp $TEMPLATE_FOLDER/$NGINX_CONF_FILE $SETTINGS_FOLDER/default.conf
-        envsubst < $TEMPLATE_FOLDER/$NGINX_CONF_FILE > $SETTINGS_FOLDER/default.conf
+        envsubst ${FILTER_VARS} < $TEMPLATE_FOLDER/$NGINX_CONF_FILE > $SETTINGS_FOLDER/default.conf
     fi
 fi
 
