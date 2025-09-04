@@ -47,7 +47,8 @@ if [ -d "$PROJECT_PROPERTIES_FOLDER" ]; then
     if [[ -f "$FILE" ]]; then
       echo Loading $FILE
       mkdir -p $WILDFLY_PROPERTIESCONF_PATH
-      cp $FILE $WILDFLY_PROPERTIESCONF_PATH
+      # cp $FILE $WILDFLY_PROPERTIESCONF_PATH
+      envsubst < $FILE > $WILDFLY_PROPERTIESCONF_PATH/$(basename $FILE)
     fi
   done
 else
@@ -63,7 +64,8 @@ if [ -d "$PROJECT_DATASOURCES_FOLDER" ]; then
     if [[ -f "$FILE" ]]; then
       echo Loading $FILE
       mkdir -p $WILDFLY_DEPLOYCONF_PATH
-      cp $FILE $WILDFLY_DEPLOYCONF_PATH
+      # cp $FILE $WILDFLY_DEPLOYCONF_PATH
+      envsubst < $FILE > $WILDFLY_DEPLOYCONF_PATH/$(basename $FILE)
     fi
   done
 else
