@@ -19,7 +19,11 @@ services:
      - APP_PACKAGE_NAME=${APP_PACKAGE_NAME}
     ports:
      - ${WILDFLY_PORT}:8080
+     - ${WILDFLY_HTTPS_PORT}:8443
      - ${WILDFLY_ADMIN_PORT}:9990
+     - ${WILDFLY_AJP_PORT}:8009
+    extra_hosts:
+     - "${WILDFLY_HOST_SERVER}:${WILDFLY_HOST_IP}"
     volumes:
      - ${WILDFLY_DEPLOY_DIR}:/opt/jboss/wildfly/standalone/deployments
      - ${WILDFLY_LIB_DIR}/backoffice.jar:/opt/jboss/wildfly/standalone/lib/backoffice.jar:ro
@@ -27,8 +31,10 @@ services:
      - ${WILDFLY_CONFIG_DIR}:/opt/jboss/webapps/config
      - ${APP_FILES_BASE_FOLDER}/assets:/app/${APP_PROJECT_NAME}/assets
      - ${APP_FILES_BASE_FOLDER}/var:/app/${APP_PROJECT_NAME}/var
-     - ${APP_FILES_BASE_FOLDER}/../../../main/1.0.0/data/assets/ssl/${NGINX_SSL_NAMESERVER}.jks:/opt/jboss/wildfly/standalone/configuration/${NGINX_SSL_NAMESERVER}.jks:ro
-     - ${APP_FILES_BASE_FOLDER}/../../../main/1.0.0/data/assets/ssl/${NGINX_SSL_NAMESERVER}trust.jks:/opt/jboss/wildfly/standalone/configuration/${NGINX_SSL_NAMESERVER}trust.jks:ro
+     - ${APP_FILES_BASE_FOLDER}/standalone/log:/opt/jboss/wildfly/standalone/log
+     - ${APP_FILES_BASE_FOLDER}/../../../main/1.0.0/data/assets/ssl:/opt/jboss/wildfly/standalone/configuration/ssl:ro
+     - ${APP_FILES_BASE_FOLDER}/../../../main/1.0.0/data/assets/sslcacerts:/opt/jboss/wildfly/standalone/configuration/sslcacerts:ro
+     - ${WILDFLY_MODULES_DIR}/org/fundaciobit:/opt/jboss/wildfly/modules/org/fundaciobit
     depends_on:
       - app-db
   # keycloak:
