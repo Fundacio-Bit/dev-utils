@@ -47,5 +47,4 @@ services:
     ports:
       - ${PGADMIN_PORT}:80
     volumes:
-      - ${APP_FILES_BASE_FOLDER}/var/lib/pgadmin:/var/lib/pgadmin
-      - ${APP_FILES_BASE_FOLDER}/pgadmin/scripts:/scripts
+      - ${APP_FILES_BASE_FOLDER}/var/lib/pgadmin:/var/lib/pgadmin 
