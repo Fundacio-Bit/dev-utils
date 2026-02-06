@@ -52,10 +52,11 @@ services:
       - ${APP_FILES_BASE_FOLDER}/../../../main/1.0.0/data/assets/ssl/${NGINX_SSL_NAMESERVER}.pem:${KEYCLOAK_HTTPS_TRUST_STORE_FILE}:ro
       - ${APP_FILES_BASE_FOLDER}/var/keycloak/log:/app/keycloak/var/log
     healthcheck:
-      test: ["CMD", "curl", "-f", "https://localhost:8443/keycloak/health"]
-      interval: 10s
+      test: ["CMD-SHELL", "exec 3<>/dev/tcp/localhost/8443"]
+      interval: 30s
       timeout: 10s
-      retries: 5
+      retries: 10
+      start_period: 60s
   app-db:
     image: postgres:15.2-alpine
     container_name: ${APP_PROJECT_NAME}-pg
