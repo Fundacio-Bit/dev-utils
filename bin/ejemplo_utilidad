@@ -1,0 +1,12 @@
+#!/usr/bin/env python3
+"""
+Script de ejemplo para /bin que ejecuta una utilidad Python desde src/utils.
+Resuelve la dependencia de forma autónoma.
+"""
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
+from utils.ejemplo import main
+
+if __name__ == "__main__":
+    sys.exit(main())
