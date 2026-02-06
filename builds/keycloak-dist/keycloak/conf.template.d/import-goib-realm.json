@@ -47,6 +47,7 @@
             "clientId": "goib-ws",
             "description": "Autenticación de servicios API REST (entorno de desarrollo local)",
             "enabled": true,
+            "bearerOnly" : true,
             "clientAuthenticatorType": "client-secret",
             "secret": "${KEYCLOAK_APP_USER_SECRET}",
             "bearerOnly" : true,
