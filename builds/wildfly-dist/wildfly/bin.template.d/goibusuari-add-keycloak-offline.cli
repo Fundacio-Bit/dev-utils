@@ -16,10 +16,23 @@ embed-server --server-config=standalone.xml
 # end-if
 
 # Configurar para notibmonitor-api-interna.war (modo bearer-only)
-/subsystem=elytron-oidc-client/secure-deployment=${LONG_APP_NAME_LOWER}-api-interna.war:add(client-id=goib-ws,auth-server-url="${KEYCLOAK_URI_ARG}", realm="GOIB", bearer-only=true, principal-attribute=preferred_username, use-resource-role-mappings=true)
+/subsystem=elytron-oidc-client/secure-deployment=${LONG_APP_NAME_LOWER}.ear%5C%2F${LONG_APP_NAME_LOWER}-api-interna.war:add(\
+    client-id=goib-ws, \
+    auth-server-url="${KEYCLOAK_URI_ARG}", \
+    realm="GOIB", \
+    bearer-only=true, \
+    principal-attribute=preferred_username, \
+    use-resource-role-mappings=true)
 
 # Configurar para notibmonitor-back.war (cliente público)
-/subsystem=elytron-oidc-client/secure-deployment=${LONG_APP_NAME_LOWER}-back.war:add(client-id=goib-default,auth-server-url="${KEYCLOAK_URI_ARG}", realm="GOIB" , public-client=true, verify-token-audience=true, principal-attribute=preferred_username, use-resource-role-mappings=true)
+/subsystem=elytron-oidc-client/secure-deployment=${LONG_APP_NAME_LOWER}-back.war:add(\
+    client-id=goib-default, \
+    auth-server-url="${KEYCLOAK_URI_ARG}", \
+    realm="GOIB", \
+    public-client=true, \
+    verify-token-audience=true, \
+    principal-attribute=preferred_username, \
+    use-resource-role-mappings=true)
 
 stop-embedded-server
 
