@@ -4,6 +4,7 @@ services:
   wildfly:
     build:
       context: ${DOCKER_PROJECT_PATH}/builds/wildfly-dist
+      dockerfile: Dockerfile.emiserv
       args:
         - KEYCLOAK_URI_ARG=${KEYCLOAK_URI_ARG}
     container_name: wildfly-${APP_PROJECT_NAME}
