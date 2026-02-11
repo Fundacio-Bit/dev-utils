@@ -35,7 +35,7 @@ ENV KC_HTTPS_PORT=8443
 
 # COPY --from=builder /opt/keycloak/ /opt/keycloak/
 
-LABEL MAINTAINER="Govern de les Illes Balears <suport@caib.es>"
+LABEL MAINTAINER=${DOCKER_FILE_MAINTAINER}
 ENV KEYCLOAK_ADMIN=admin \
     KEYCLOAK_ADMIN_PASSWORD=admin
     # KEYCLOAK_IMPORT=/tmp/import-goib-realm.json

@@ -25,7 +25,7 @@ ARG jdk=11
 ARG dist=ubi9-minimal
 FROM eclipse-temurin:${jdk}-${dist}
 
-LABEL MAINTAINER="Govern de les Illes Balears <suport@caib.es>"
+LABEL MAINTAINER=${DOCKER_FILE_MAINTAINER}
 
 LABEL org.opencontainers.image.source=https://github.com/jboss-dockerfiles/wildfly org.opencontainers.image.title=wildfly org.opencontainers.imag.url=https://github.com/jboss-dockerfiles/wildfly org.opencontainers.image.vendor=WildFly
 
