@@ -70,7 +70,7 @@ services:
       #- ${DOCKER_PROJECT_PATH}/builds/postgresql-dist/postgresql/tablespaces/${LONG_APP_NAME_LOWER}:/var/lib/postgresql/app/tablespaces
       #- ${DOCKER_PROJECT_PATH}/builds/postgresql-dist/postgresql/backups/${LONG_APP_NAME_LOWER}:/var/lib/postgresql/app/backups
     environment:
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_PASSWORD=${PG_POSTGRES_PASSWORD}
       - LONG_APP_NAME=${APP_PROJECT_DB_NAME}
       - SHORT_APP_NAME=${SHORT_APP_NAME_LOWER}
       - PGTABLESPACES=/var/lib/postgresql/data/tablespaces

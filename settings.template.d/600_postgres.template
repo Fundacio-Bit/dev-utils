@@ -6,6 +6,8 @@ PG_LONG_APP_NAME=${APP_PROJECT_DB_NAME}
 PG_PORT=5441
 PGADMIN_PORT=5540
 
+PG_POSTGRES_PASSWORD=changeit
+
 PG_DUMP_TARGET=/app/postgresql/backups
 PG_95_PATH=/usr/lib/postgresql/9.5/bin
 PG_10_2_PATH=/usr/lib/postgresql/10.2/bin

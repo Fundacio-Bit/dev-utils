@@ -22,7 +22,7 @@ FROM postgres:9.5-alpine
 # Maintainer
 # ----------
 
-LABEL MANTAINER="Guillermo De Ignacio <gdeignacio@gmail.com>"
+LABEL MANTAINER=${DOCKER_FILE_MAINTAINER}
 
 # Environment variables required for this build (do NOT change)
 # -------------------------------------------------------------

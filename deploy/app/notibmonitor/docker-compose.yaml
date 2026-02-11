@@ -48,7 +48,7 @@ services:
       - ${APP_FILES_BASE_FOLDER}/postgresql/15.2-alpine/data:/var/lib/postgresql/data
       - ${APP_FILES_BASE_FOLDER}/postgresql/15.2-alpine/backups:/app/postgresql/backups
     environment:
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_PASSWORD=${PG_POSTGRES_PASSWORD}
       - LONG_APP_NAME=${APP_PROJECT_DB_NAME}
       - SHORT_APP_NAME=${SHORT_APP_NAME_LOWER}
       - PGTABLESPACES=/var/lib/postgresql/data/tablespaces

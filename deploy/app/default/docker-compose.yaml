@@ -9,8 +9,8 @@ services:
     container_name: wildfly-${APP_PROJECT_NAME}
     hostname: wildfly-${APP_PROJECT_DOCKER_SERVER_NAME}
     environment:
-     - ADMIN_USER=admin
-     - ADMIN_PASSWORD=admin
+     - ADMIN_USER=${WILDFLY_ADMIN_USER}
+     - ADMIN_PASSWORD=${WILDFLY_ADMIN_PASS}
     ports:
      - ${WILDFLY_PORT}:8080
      - ${WILDFLY_ADMIN_PORT}:9990
@@ -28,8 +28,8 @@ services:
     container_name: keycloak-${APP_PROJECT_NAME}
     hostname: keycloak-${APP_PROJECT_DOCKER_SERVER_NAME}
     environment:
-     - KEYCLOAK_USER=admin
-     - KEYCLOAK_PASSWORD=admin
+     - KEYCLOAK_USER=${KEYCLOAK_ADMIN_USER}
+     - KEYCLOAK_PASSWORD=${KEYCLOAK_ADMIN_PASS}
      - KEYCLOAK_IMPORT=/tmp/import-goib-realm.json
     ports:
      - ${KEYCLOAK_PORT}:8180
@@ -56,7 +56,7 @@ services:
       - ${APP_FILES_BASE_FOLDER}/postgresql/data:/var/lib/postgresql/data
       - ${APP_FILES_BASE_FOLDER}/postgresql/backups:/app/postgresql/backups
     environment:
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_PASSWORD=${PG_POSTGRES_PASSWORD}
       - LONG_APP_NAME=${APP_PROJECT_DB_NAME}
       - SHORT_APP_NAME=${SHORT_APP_NAME_LOWER}
       - PGTABLESPACES=/var/lib/postgresql/data/tablespaces
