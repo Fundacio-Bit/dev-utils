@@ -5,7 +5,7 @@ CREDENTIAL_USER=$ADMIN_USER
 CREDENTIAL_PASS=$ADMIN_PASSWORD
 
 # Wildfly admin user credentials
-exec /opt/jboss/wildfly/bin/add-user.sh -u ${CREDENTIAL_USER} -p ${CREDENTIAL_PASS} --silent
+./bin/add-user.sh -u ${CREDENTIAL_USER} -p ${CREDENTIAL_PASS} --silent
 
 CERT_DIR="/opt/jboss/wildfly/standalone/configuration/sslcacerts"
 KEYSTORE="$JAVA_HOME/lib/security/cacerts"
