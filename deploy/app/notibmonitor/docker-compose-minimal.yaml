@@ -1,22 +1,35 @@
 version: '3.2'
-name: emiservcedent
 services:
   wildfly:
     build:
       context: ${DOCKER_PROJECT_PATH}/builds/wildfly-dist
       args:
         - KEYCLOAK_URI_ARG=${KEYCLOAK_URI_ARG}
+        - DOCKER_FILE_MAINTAINER=${DOCKER_FILE_MAINTAINER}
     container_name: wildfly-${APP_PROJECT_NAME}
     hostname: wildfly-${APP_PROJECT_DOCKER_SERVER_NAME}
     environment:
      - ADMIN_USER=$WILDFLY_ADMIN_USER
      - ADMIN_PASSWORD=$WILDFLY_ADMIN_PASS
+     - LONG_APP_NAME_LOWER=${LONG_APP_NAME_LOWER}
+     - SHORT_APP_NAME_LOWER=${SHORT_APP_NAME_LOWER}
+     - LONG_APP_NAME_UPPER=${LONG_APP_NAME_UPPER}
+     - SHORT_APP_NAME_UPPER=${SHORT_APP_NAME_UPPER}
+     - APP_DOMAIN_NAME=${APP_DOMAIN_NAME}
+     - APP_PACKAGE_NAME=${APP_PACKAGE_NAME}
     ports:
      - ${WILDFLY_PORT}:8080
+     - ${WILDFLY_HTTPS_PORT}:8443
      - ${WILDFLY_ADMIN_PORT}:9990
+     - ${WILDFLY_AJP_PORT}:8009
+    extra_hosts:
+     - "${WILDFLY_HOST_SERVER}:${WILDFLY_HOST_IP}"
     volumes:
      - ${WILDFLY_DEPLOY_DIR}:/opt/jboss/wildfly/standalone/deployments
      - ${WILDFLY_CONFIG_DIR}:/opt/jboss/webapps/config
      - ${APP_FILES_BASE_FOLDER}/assets:/app/${APP_PROJECT_NAME}/assets
      - ${APP_FILES_BASE_FOLDER}/var:/app/${APP_PROJECT_NAME}/var
-    
+     - ${APP_FILES_BASE_FOLDER}/standalone/log:/opt/jboss/wildfly/standalone/log
+     - ${APP_FILES_BASE_FOLDER}/../../../main/1.0.0/data/assets/ssl:/opt/jboss/wildfly/standalone/configuration/ssl:ro
+     - ${APP_FILES_BASE_FOLDER}/../../../main/1.0.0/data/assets/sslcacerts:/opt/jboss/wildfly/standalone/configuration/sslcacerts:ro
+     - ${WILDFLY_MODULES_DIR}/org/fundaciobit:/opt/jboss/wildfly/modules/org/fundaciobit

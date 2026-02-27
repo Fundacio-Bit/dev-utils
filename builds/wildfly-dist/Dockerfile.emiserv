@@ -25,7 +25,9 @@ ARG jdk=11
 ARG dist=ubi9-minimal
 FROM eclipse-temurin:${jdk}-${dist}
 
-LABEL MAINTAINER=${DOCKER_FILE_MAINTAINER}
+ARG DOCKER_FILE_MAINTAINER="Maintainer <user@example.com>"
+
+LABEL org.opencontainers.image.authors="${DOCKER_FILE_MAINTAINER}"
 
 LABEL org.opencontainers.image.source=https://github.com/jboss-dockerfiles/wildfly org.opencontainers.image.title=wildfly org.opencontainers.imag.url=https://github.com/jboss-dockerfiles/wildfly org.opencontainers.image.vendor=WildFly
 
@@ -39,22 +41,20 @@ WORKDIR /opt/jboss
 RUN groupadd -r jboss -g 1000 && useradd -u 1000 -r -g jboss -m -d /opt/jboss -s /sbin/nologin -c "JBoss user" jboss && \
     chmod 755 /opt/jboss
 
-
-
 ARG KEYCLOAK_URI_ARG=http://keycloak-goib:8180
 
 ENV WILDFLY_VERSION=26.0.1.Final \
     WILDFLY_SHA1=08908faf9ae99e5fb6374979afbffea461aadc2c \
     # WILDFLY_SHA1=757d89d86d01a9a3144f34243878393102d57384 \
     JBOSS_HOME=/opt/jboss/wildfly \
-    ADMIN_USER=${WILDFLY_ADMIN_USER} \
-    ADMIN_PASSWORD=${WILDFLY_ADMIN_PASS} \
+    JBOSS_USER=jboss \
     KEYCLOAK_URI=$KEYCLOAK_URI_ARG \
     KEYCLOAK_VERSION=6.0.1 \
     POSTGRESQL_JDBC_VERSION=42.2.5 \
     ORACLE_JDBC_VERSION=12.2.0.1 \
-    LOMBOK_VERSION=1.18.18 \
-    PATH=${JBOSS_HOME}/bin:/tmp:${PATH}
+    LOMBOK_VERSION=1.18.18
+
+ENV PATH=${JBOSS_HOME}/bin:/tmp:${PATH}
 
 USER root
 
@@ -87,7 +87,7 @@ RUN cd $HOME \
     && chmod -R g+rw ${JBOSS_HOME}
 
 # Ensure signals are forwarded to the JVM process correctly for graceful shutdown
-ENV LAUNCH_JBOSS_IN_BACKGROUND true
+ENV LAUNCH_JBOSS_IN_BACKGROUND=true
 
 USER root
 WORKDIR /tmp
@@ -98,7 +98,7 @@ USER ${JBOSS_USER}
 WORKDIR ${JBOSS_HOME}
 
 # Wildfly administration
-RUN bin/add-user.sh ${ADMIN_USER} ${ADMIN_PASSWORD} --silent 
+# RUN bin/add-user.sh ${ADMIN_USER} ${ADMIN_PASSWORD} --silent 
 
 # PostgreSQL drivers
 RUN curl -OL https://jdbc.postgresql.org/download/postgresql-${POSTGRESQL_JDBC_VERSION}.jar
