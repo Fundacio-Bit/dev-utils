@@ -49,7 +49,7 @@ services:
       - ${APP_FILES_BASE_FOLDER}/../../../main/1.0.0/data/assets/ssl/${NGINX_SSL_NAMESERVER}.crt:${KEYCLOAK_HTTPS_CERTIFICATE_FILE}:ro
       - ${APP_FILES_BASE_FOLDER}/../../../main/1.0.0/data/assets/ssl/${NGINX_SSL_NAMESERVER}.key:${KEYCLOAK_HTTPS_CERTIFICATE_KEY_FILE}:ro
       - ${APP_FILES_BASE_FOLDER}/../../../main/1.0.0/data/assets/ssl/${NGINX_SSL_NAMESERVER}.p12:${KEYCLOAK_HTTPS_KEY_STORE_FILE}:ro
-      - ${APP_FILES_BASE_FOLDER}/../../../main/1.0.0/data/assets/ssl/${NGINX_SSL_NAMESERVER}.pem:${KEYCLOAK_HTTPS_TRUST_STORE_FILE}:ro
+      - ${APP_FILES_BASE_FOLDER}/../../../main/1.0.0/data/assets/ssl/${NGINX_SSL_NAMESERVER}.crt:${KEYCLOAK_HTTPS_TRUST_STORE_FILE}:ro
       - ${APP_FILES_BASE_FOLDER}/var/keycloak/log:/app/keycloak/var/log
     healthcheck:
       test: ["CMD-SHELL", "exec 3<>/dev/tcp/localhost/8443"]
