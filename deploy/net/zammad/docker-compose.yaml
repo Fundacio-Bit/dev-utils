@@ -1,0 +1,68 @@
+version: '3.2'
+name: zammad
+
+services:
+  zammad:
+    image: zammad/zammad:latest
+    container_name: zammad-${APP_PROJECT_NAME}
+    hostname: zammad-${APP_PROJECT_DOCKER_SERVER_NAME}
+    restart: unless-stopped
+    depends_on:
+      - zammad-postgresql
+      - zammad-redis
+      - zammad-elasticsearch
+    ports:
+      - ${ZAMMAD_HTTP_PORT}:3000
+    extra_hosts:
+      - "${ZAMMAD_HOST_SERVER}:${ZAMMAD_HOST_IP}"
+    environment:
+      - TZ=Europe/Madrid
+      - RAILS_ENV=${ZAMMAD_RAILS_ENV}
+      - POSTGRESQL_HOST=zammad-postgresql
+      - POSTGRESQL_PORT=${ZAMMAD_POSTGRES_PORT}
+      - POSTGRESQL_DB=${ZAMMAD_POSTGRES_DB}
+      - POSTGRESQL_USER=${ZAMMAD_POSTGRES_USER}
+      - POSTGRESQL_PASS=${ZAMMAD_POSTGRES_PASSWORD}
+      - REDIS_URL=${ZAMMAD_REDIS_URL}
+      - ELASTICSEARCH_ENABLED=true
+      - ELASTICSEARCH_URL=${ZAMMAD_ELASTICSEARCH_URL}
+      - ZAMMAD_FQDN=${ZAMMAD_FQDN}
+      - NGINX_SERVER_NAME=${ZAMMAD_FQDN}
+    volumes:
+      - ${APP_FILES_BASE_FOLDER}/var/zammad/storage:/opt/zammad/storage
+
+  zammad-postgresql:
+    image: postgres:15.2-alpine
+    container_name: zammad-pg-${APP_PROJECT_NAME}
+    hostname: zammad-pg-${APP_PROJECT_DOCKER_SERVER_NAME}
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=${ZAMMAD_POSTGRES_DB}
+      - POSTGRES_USER=${ZAMMAD_POSTGRES_USER}
+      - POSTGRES_PASSWORD=${ZAMMAD_POSTGRES_PASSWORD}
+      - LANG=es_ES.UTF-8
+      - LANGUAGE=es_ES:es
+      - LC_ALL=es_ES.UTF-8
+    volumes:
+      - ${APP_FILES_BASE_FOLDER}/postgresql/zammad/data:/var/lib/postgresql/data
+
+  zammad-redis:
+    image: redis:7-alpine
+    container_name: zammad-redis-${APP_PROJECT_NAME}
+    hostname: zammad-redis-${APP_PROJECT_DOCKER_SERVER_NAME}
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - ${APP_FILES_BASE_FOLDER}/var/lib/redis/zammad:/data
+
+  zammad-elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.3
+    container_name: zammad-es-${APP_PROJECT_NAME}
+    hostname: zammad-es-${APP_PROJECT_DOCKER_SERVER_NAME}
+    restart: unless-stopped
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+    volumes:
+      - ${APP_FILES_BASE_FOLDER}/var/lib/elasticsearch/zammad:/usr/share/elasticsearch/data
