@@ -45,7 +45,7 @@ echo ""
 isLinux=$(lib_env_utils.check_os)
 echo $isLinux
 
-if [[ isLinux -eq 1 ]]; then
+if [[ $isLinux -eq 1 ]]; then
 
     sudo apt-get update
     sudo apt-get upgrade

@@ -48,7 +48,7 @@ echo $isLinux
 echo ""
 
 
-if [[ isLinux -eq 1 ]]; then
+if [[ $isLinux -eq 1 ]]; then
 
     sudo apt-get update
     sudo apt-get upgrade

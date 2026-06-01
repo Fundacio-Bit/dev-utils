@@ -70,7 +70,7 @@ echo $isLinux
 # Kubernetes recomienda desactivarlo porque el programador de recursos no maneja bien el intercambio de memoria.
 # Desde Kubernetes 1.22, puedes permitir swap usando --fail-swap-on=false al iniciar kubelet.
 
-if [[ isLinux -eq 1 ]]; then
+if [[ $isLinux -eq 1 ]]; then
 
 
     # Habilitar módulos del kernel para Kubernetes

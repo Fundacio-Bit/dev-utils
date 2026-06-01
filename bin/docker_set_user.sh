@@ -45,7 +45,7 @@ echo ""
 isLinux=$(lib_env_utils.check_os)
 echo $isLinux
 
-if [[ isLinux -eq 1 ]]; then
+if [[ $isLinux -eq 1 ]]; then
     # sudo useradd -p $(openssl passwd -1 docker) docker -g docker
     # sudo usermod -a -G docker emiserv
     sudo usermod -a -G docker ${DOCKER_CUSTOM_USERNAME_ON_INSTALL}

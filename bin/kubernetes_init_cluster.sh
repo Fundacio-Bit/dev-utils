@@ -47,7 +47,7 @@ echo $isLinux
  
 
 
-if [[ isLinux -eq 1 ]]; then
+if [[ $isLinux -eq 1 ]]; then
 
     sudo kubeadm init --pod-network-cidr=192.168.0.0/16 --node-name 127.0.0.1
     # Cuando termine, verás un comando kubeadm join ... que necesitarás más tarde para agregar nodos.

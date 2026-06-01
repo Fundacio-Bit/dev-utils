@@ -47,7 +47,7 @@ echo $isLinux
  
 
 
-if [[ isLinux -eq 1 ]]; then
+if [[ $isLinux -eq 1 ]]; then
 
     sudo systemctl stop kubelet
 

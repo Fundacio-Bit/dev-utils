@@ -52,7 +52,7 @@ else
     mkdir -p $MAVEN_TARGET
 fi
 
-if [[ isLinux -eq 1 ]]; then
+if [[ $isLinux -eq 1 ]]; then
     MAVEN_FILE=${MAVEN_LINUX_FILE}
     MAVEN_URL=${MAVEN_BASEURL}${MAVEN_FILE}
     echo ""
