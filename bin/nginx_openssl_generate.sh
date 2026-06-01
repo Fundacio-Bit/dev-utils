@@ -1,12 +1,19 @@
 #!/usr/bin/env bash
 
-#### Description: Lists alias from jks keystore
+### Description: Script to generate SSL certificates for Nginx using OpenSSL and Keytool
+### Usage: ./nginx_openssl_generate.sh
+### This script generates a CA certificate, a server certificate signed by the CA, and creates a PKCS12 file for use with Elytron and a PEM file for Nginx. 
+### It also creates a truststore for Wildfly.
+### The script uses environment variables defined in the .env file for configuration.
+### The generated certificates and keys are stored in the assets/ssl directory.
+
 #### Written by: Guillermo de Ignacio - gdeignacio on 04-2021
 
 # Revision 2024-08-01
+# Revision 2026-05-28
 
 ###################################
-###   KEYTOOL LIST              ###
+# OPENSSL CONFIGURATION
 ###################################
 
 set -o errexit

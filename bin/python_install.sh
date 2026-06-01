@@ -1,9 +1,17 @@
 #!/usr/bin/env bash
 
 #### Description: Installs python tools
+#### The script loads environment variables from the .env file and installs python and virtualenv if the operating system is Linux.
+#### The python version is specified in the .env file with the variable PYTHON.
+#### The script is idempotent, meaning that it can be run multiple times without causing issues.
+#### Also checks the operating system and prints it out.
+#### Intended to be run from the bin directory of the project.
 #### Written by: Guillermo de Ignacio - gdeignacio on 11-2022
 
 # Revision 2024-08-01
+# Revision 2024-08-01: Updated to load environment variables from .env file and install python and virtualenv if the operating system is Linux.
+# Revision 2026-05-26: Minor updates and improvements
+
 
 ###################################
 ###   Python INSTALL UTILS      ###

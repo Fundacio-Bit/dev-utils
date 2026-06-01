@@ -49,7 +49,7 @@ fi
 isLinux=$(lib_env_utils.check_os)
 # echo "Var islinux value= ${isLinux}"
 
-if [[ isLinux -eq 1 ]]; then
+if [[ $isLinux -eq 1 ]]; then
     JDK_FILE=${JDK_LINUX_FILE}
     JDK_URL=${JDK_BASEURL}${JDK_FILE}
     echo ""

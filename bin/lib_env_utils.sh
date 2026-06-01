@@ -1,7 +1,14 @@
 #!/usr/bin/env bash
 
 #### Description: Loads environment variables from .env file
+#### The script defines functions to check the operating system, check if Docker and R are available, and load environment variables from a .env file.
+#### The script is intended to be sourced by other scripts that need to load environment variables and check
 #### Written by: Guillermo de Ignacio - gdeignacio on 01-2023
+
+# Revision 2024-08-01
+# Revision 2024-08-01: Updated to load environment variables from .env file and check if Docker and R are available.
+# Revision 2026-05-26: Minor updates and improvements
+
 
 #### THIS FILE USED TO BE SOURCED. THINK TWICE BEFORE UPDATE.
 #### EXECUTING BY YOURSELF WILL ONLY TAKE EFFECT IN YOUR CURRENT SHELL.

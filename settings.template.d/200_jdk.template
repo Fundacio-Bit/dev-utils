@@ -1,4 +1,7 @@
 # JDK Download section
+
+# Revised on 2026-06-01 (june 1st, 2026)
+
 # Downloading java version lower than 9 is up to you
 # See https://jdk.java.net/archive/
 
@@ -18,17 +21,6 @@ JDK11_WINDOWS_FILE=openjdk-11_windows-x64_bin.zip
 JDK11_TARGET=${JDK_BASE_PATH}/main
 # JDK11_URL=https://download.java.net/java/ga/jdk11/openjdk-11_linux-x64_bin.tar.gz
 
-# Oracle JDK 8 download requires login and accepting license agreement
-# You need to download it manually and place it in ${JDK8_TARGET} folder
-# See https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html
-# 1.8.0_281 is the last free public update of JDK 8
-# If you need newer version you must have a paid Oracle account
-# Better use OpenJDK 11 or newer
-JDK8_URL=https://javadl.oracle.com/webapps/download/GetFile/1.8.0_281-b09/89d678f2be164786b292527658ca1605/linux-i586/jdk-8u281-linux-x64.tar.gz
-JDK8_TARGET=${JDK_BASE_PATH}/${APP_NAME}
-JDK8_TARFILE=jdk-8u281-linux-x64.tar.gz
-
-
 JDK_BASEURL=$JDK11_BASEURL
 JDK_LINUX_FILE=$JDK11_LINUX_FILE
 JDK_WINDOWS_FILE=$JDK11_WINDOWS_FILE
@@ -40,14 +32,7 @@ JDK_TARGET=$JDK11_TARGET
 # jdk section
 # set here previously installed jdk path
 
-JDK8_HOME=$JDK8_TARGET/jdk1.8.0_281
-JDK7_HOME=/usr/lib/jvm/jdk1.7.0_80
 OPENJDK11_HOME=$JDK11_TARGET/jdk-11
-
-# JDK8 settings
-# JAVA_HOME=$JDK8_HOME
-# JDK_HOME=$JDK8_HOME
-# end of JDK8 settings
 
 # JDK11 settings
 JAVA_HOME=$OPENJDK11_HOME

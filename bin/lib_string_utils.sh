@@ -1,7 +1,13 @@
 #!/usr/bin/env bash
 
 #### Description: String utils function library
+#### The script defines functions to convert spinal case to camel case, lower case, and upper case, and a function to replace key-value pairs in a file.
+#### The script is intended to be sourced by other scripts that need string manipulation utilities.
 #### Written by: Guillermo de Ignacio - gdeignacio on 01-2023
+
+# Revision 2024-08-01
+# Revision 2024-08-01: Updated to define functions to convert spinal case to camel case, lower case, and upper case, and a function to replace key-value pairs in a file.
+# Revision 2026-05-26: Minor updates and improvements
 
 
 #### THIS FILE USED TO BE SOURCED. THINK TWICE BEFORE UPDATE.

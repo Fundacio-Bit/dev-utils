@@ -1,12 +1,18 @@
 #!/usr/bin/env bash
 
-#### Description: Installs python tools
+#### Description: Activates python virtual environments. 
+#### The script loads environment variables from the .env file and activates the virtual environment created in the parent directory of the project with the name ${APP_PROJECT_NAME}-virtualenv.
+#### Checks if the virtual environment is activated successfully by checking the VIRTUAL_ENV variable and printing the Python version.
+#### Intended to be sourced in the terminal, not executed as a standalone script.
+#### Deactivate is up to the user.
 #### Written by: Guillermo de Ignacio - gdeignacio on 11-2022
 
 # Revision 2024-08-01
+# Revision 2024-08-01: Updated to load environment variables from .env file and activate the virtual environment created by python_venv.sh.
+# Revision 2026-05-26: Minor updates and improvements
 
 ###################################
-###   DOCKER INSTALL UTILS      ###
+###   PYTHON ACTIVATE UTILS     ###
 ###################################
 
 set -o errexit
@@ -20,7 +26,7 @@ fi
 if [[ "${1-}" =~ ^-*h(elp)?$ ]]; then
     echo 'Usage: ./python_activate.sh
 
-    Activates python virtual environmentS
+    Activates python virtual environments
 
 '
     exit
@@ -49,7 +55,10 @@ if [[ -z "${APP_PROJECT_NAME-}" ]]; then
     exit 1
 fi
 
-VENV_PATH=${PROJECT_PATH}/../${APP_PROJECT_NAME}-virtualenv
+VENV_BASE_PATH=${PYTHON_VENV_BASE_PATH}
+VENV_NAME=${PYTHON_VENV_TOOLS_NAME}
+
+VENV_PATH=${VENV_BASE_PATH}/${VENV_NAME}
 
 if [[ -z "${VENV_PATH-}" ]]; then
     echo "Error: VENV_PATH is not set."
@@ -82,7 +91,3 @@ else
     echo "Error: Failed to activate virtual environment."
     exit 1
 fi
-
-# Deactivate the virtual environment
-deactivate
-echo "Virtual environment deactivated."
