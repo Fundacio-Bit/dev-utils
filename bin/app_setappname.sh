@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-#### Description: Overrides default app name with custom values
+#### Description: Overrides default app name and index with custom values
 #### Written by: Guillermo de Ignacio - gdeignacio on 01-2023
 
 ### Revision 2024-08-01
@@ -18,7 +18,7 @@ if [[ "${TRACE-0}" == "1" ]]; then
 fi
 
 if [[ "${1-}" =~ ^-*h(elp)?$ ]]; then
-    echo 'Usage: ./app_setappname.sh --codapp=codapp --app=app
+    echo 'Usage: ./app_setappname.sh --codapp=codapp --app=app --index=index
 
 Setting APP name values
 
@@ -36,7 +36,7 @@ echo ""
 source $PROJECT_PATH/bin/lib_string_utils.sh
 
 
-remaining=2
+remaining=3
 
 settings_file_pattern=${PROJECT_PATH}/settings/100_app
 cp ${settings_file_pattern} ${settings_file_pattern}.new
@@ -54,6 +54,11 @@ do
         let "remaining--"
         shift # past argument=value
         ;;
+        -index=*|--index=*)
+        NEW_APP_INDEX="${i#*=}"
+        let "remaining--"
+        shift # past argument=value
+        ;;
         *)
             # unknown option
         ;;
@@ -65,8 +70,10 @@ if [[ remaining -eq 0 ]]; then
     export NEW_LONG_APP_NAME
     echo Setting SHORT_APP_NAME to $NEW_SHORT_APP_NAME
     export NEW_SHORT_APP_NAME
+    echo Setting APP_INDEX to $NEW_APP_INDEX
+    export NEW_APP_INDEX
 else
-    if [[ remaining -eq 2 ]]; then
+    if [[ remaining -eq 3 ]]; then
         echo Loading default values
         exit 0
     else
@@ -99,6 +106,11 @@ while read line; do
         export $key=$(eval echo $NEW_SHORT_APP_NAME)
         echo "$key : $(eval echo \${$key})" 
         ;;
+        APP_INDEX)
+        lib_string_utils.replace_key_value $key $current_value $NEW_APP_INDEX ${settings_file_pattern}.new 
+        export $key=$(eval echo $NEW_APP_INDEX)
+        echo "$key : $(eval echo \${$key})" 
+        ;;
         *)
         echo "No value substitution for $key"
         export $key=$(eval echo $value)
@@ -108,3 +120,4 @@ while read line; do
 done < <(cat ${settings_file_pattern} | grep -v "#" | grep -v "^$")
 
 mv ${settings_file_pattern}.new ${settings_file_pattern}
+

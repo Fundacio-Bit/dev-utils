@@ -104,4 +104,6 @@ APP_FILES_SUBFOLDER_ARRAY="assets bundle var"
 # APP_ARRAY ="first-app second-app third-app"
 APP_ARRAY="main/1.0.0 keycloak/24.0.1"
 
+APP_INDEX=0
+
 # end app section
