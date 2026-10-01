@@ -23,8 +23,8 @@ jobs:
         env:
           LABELS_FILE: '.github/labels.json'
         with:
-          # Usamos el token nativo que acabamos de elevar arriba
-          github-token: \${{ secrets.GITHUB_TOKEN }}
+          # Usa el token automático de GitHub Actions con permisos de issues: write
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const fs = require('fs');
             if (!fs.existsSync(process.env.LABELS_FILE)) {
