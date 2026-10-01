@@ -1,0 +1,43 @@
+[
+  { "name": "CAIB", "color": "0052cc", "description": "" },
+
+  { "name": "Estimació: 0.5D", "color": "ededed", "description": "" },
+  { "name": "Estimació: 1D", "color": "ededed", "description": "" },
+  { "name": "Estimació: 2D", "color": "ededed", "description": "" },
+  { "name": "Estimació: 3D", "color": "ededed", "description": "" },
+  { "name": "Estimació: 4D", "color": "ededed", "description": "" },
+  { "name": "Estimació: 5D", "color": "ededed", "description": "" },
+  { "name": "Estimació: EPIC", "color": "000000", "description": "" },
+
+  { "name": "Lloc:General", "color": "1d76db", "description": "" },
+  { "name": "Lloc:Core", "color": "1d76db", "description": "" },
+  { "name": "Lloc:EJB", "color": "1d76db", "description": "" },
+  { "name": "Lloc:Plugin", "color": "1d76db", "description": "" },
+  { "name": "Lloc:Web", "color": "1d76db", "description": "" },
+  { "name": "Lloc:WebServices", "color": "1d76db", "description": "" },
+  { "name": "Lloc:Test", "color": "c2e0c6", "description": "" },
+
+  { "name": "Prioritat:Immediata", "color": "b60205", "description": "" },
+  { "name": "Prioritat:Molt_Alta", "color": "d93f0b", "description": "" },
+  { "name": "Prioritat:Alta", "color": "e11d21", "description": "" },
+  { "name": "Prioritat:Normal", "color": "fbca04", "description": "" },
+  { "name": "Prioritat:Baixa", "color": "006b75", "description": "" },
+  { "name": "Prioritat:Molt_Baixa", "color": "c5def5", "description": "" },
+
+  { "name": "Tipus:Analisi_Disseny", "color": "d4c5f9", "description": "" },
+  { "name": "Tipus:BBDD", "color": "fef2c0", "description": "" },
+  { "name": "Tipus:Compilacio_Construccio", "color": "fef2c0", "description": "" },
+  { "name": "Tipus:Configuracio", "color": "bfd4f2", "description": "" },
+  { "name": "Tipus:Consulta", "color": "c5def5", "description": "" },
+  { "name": "Tipus:Refactoritzacio", "color": "a2eeef", "description": "" },
+  { "name": "Tipus:Noves_Caracteristiques", "color": "0e8a16", "description": "" },
+  { "name": "Tipus:Millora", "color": "5319e7", "description": "" },
+  { "name": "Tipus:Manteniment", "color": "fbca04", "description": "" },
+  { "name": "Tipus:Error", "color": "e11d21", "description": "" },
+
+  { "name": "Resolucio:Duplicada", "color": "ffffff", "description": "" },
+  { "name": "Resolucio:Invalida", "color": "ffffff", "description": "" },
+  { "name": "Resolucio:NoSolucionada", "color": "ffffff", "description": "" },
+
+  { "name": "Pendent tercer", "color": "fef2c0", "description": "" }
+]

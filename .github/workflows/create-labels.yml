@@ -1,0 +1,59 @@
+name: 🏷️ Sincronizar Etiquetas del Proyecto
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+jobs:
+  labels:
+    name: Actualizar listado oficial en el repositorio
+    runs-on: ubuntu-24.04
+    permissions:
+      issues: write   # Permite crear y modificar etiquetas en este repositorio
+      contents: read  # Permite descargar y leer el archivo labels.json
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v5
+
+      - name: Inyectar etiquetas vía API de GitHub
+        uses: actions/github-script@v8
+        env:
+          LABELS_FILE: '.github/labels.json'
+        with:
+          # Usamos el token nativo que acabamos de elevar arriba
+          github-token: \${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            if (!fs.existsSync(process.env.LABELS_FILE)) {
+              throw new Error(`No se encuentra el archivo ${process.env.LABELS_FILE} en la raíz.`);
+            }
+            const labels = JSON.parse(fs.readFileSync(process.env.LABELS_FILE, 'utf8'));
+            
+            for (const label of labels) {
+              try {
+                await github.rest.issues.createLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: label.name,
+                  color: label.color,
+                  description: label.description
+                });
+                console.log(`✅ Etiqueta creada: ${label.name}`);
+              } catch (error) {
+                if (error.status === 422) {
+                  await github.rest.issues.updateLabel({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    name: label.name,
+                    color: label.color,
+                    description: label.description
+                  });
+                  console.log(`🔄 Etiqueta actualizada: ${label.name}`);
+                } else {
+                  console.log(`❌ Error en ${label.name}:`, error);
+                }
+              }
+            }

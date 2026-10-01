@@ -1,0 +1,74 @@
+name: "🐞 Reporte de error"
+description: "Informa un problema funcional o técnico para poder corregirlo."
+title: ""
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gracias por reportar este problema. Completa la información para facilitar su revisión.
+
+  - type: input
+    id: summary
+    attributes:
+      label: "Resumen corto"
+      description: "Describe el problema en una frase."
+      placeholder: "Ej. El login falla al introducir credenciales válidas"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: "Descripción del problema"
+      description: "Explica qué ocurre, cuándo ocurre y cuál es el comportamiento esperado."
+      placeholder: |
+        - Qué ocurre:
+        - Cuándo ocurre:
+        - Qué esperabas:
+        - Qué ocurre realmente:
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: "Pasos para reproducir"
+      description: "Indica los pasos exactos para reproducirlo."
+      placeholder: |
+        1. Accede a ...
+        2. Haz clic en ...
+        3. Introduce ...
+        4. Se observa ...
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: "Entorno"
+      description: "Desarrollo, preproducción, producción o local."
+      placeholder: "Ej. Producción, versión 2.0.5"
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: "Evidencia"
+      description: "Incluye capturas, logs, mensajes de error, URLs, etc."
+      placeholder: "Pega logs, errores, capturas o enlaces relevantes."
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: "Impacto"
+      description: "¿A quién afecta y con qué gravedad?"
+      placeholder: "Ej. afecta a usuarios finales, bloquea proceso de alta, etc."
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: "Comprobaciones"
+      options:
+        - label: "He revisado si ya existe un issue similar."
+        - label: "He intentado reproducir el problema con datos reales o de prueba."
+        - label: "He documentado el impacto y la evidencia disponible."

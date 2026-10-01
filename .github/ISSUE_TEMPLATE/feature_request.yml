@@ -1,0 +1,61 @@
+name: "✨ Solicitud de mejora"
+description: "Propón una nueva funcionalidad, mejora o cambio de comportamiento."
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe la funcionalidad que quieres proponer y el valor de negocio o de uso que aporta.
+
+  - type: input
+    id: title
+    attributes:
+      label: "Título de la propuesta"
+      description: "Resumen breve de la mejora."
+      placeholder: "Ej. Añadir filtro por fecha en el listado de incidencias"
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: "Problema o necesidad"
+      description: "¿Qué problema resuelve esta mejora?"
+      placeholder: "Explica la necesidad actual y el contexto."
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: "Propuesta"
+      description: "Describe la solución propuesta o el cambio que te gustaría ver."
+      placeholder: "Detalla el comportamiento deseado, flujo de uso o funcionalidad esperada."
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: "Criterios de aceptación"
+      description: "Qué debe ocurrir para considerar la mejora completada."
+      placeholder: |
+        - El usuario puede ...
+        - La pantalla muestra ...
+        - El sistema valida ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: "Alternativas consideradas"
+      description: "Si has pensado otras opciones, indícalas aquí."
+      placeholder: "Incluye soluciones alternativas o trabajoarounds conocidos."
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: "Impacto esperado"
+      description: "¿A quién afecta y qué beneficio aporta?"
+      placeholder: "Ej. reduce tiempo de gestión, mejora la trazabilidad, evita errores manuales."

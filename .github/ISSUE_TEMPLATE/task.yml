@@ -1,0 +1,73 @@
+name: "🧩 Tarea de trabajo"
+description: "Registra una tarea técnica o de coordinación que requiere ejecución y seguimiento."
+labels: ["task"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Usa esta plantilla para tareas internas, de mantenimiento, análisis o ejecución de trabajo.
+
+  - type: input
+    id: task_name
+    attributes:
+      label: "Nombre de la tarea"
+      description: "Título breve de la tarea."
+      placeholder: "Ej. Revisar configuración de despliegue de la API"
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: "Contexto"
+      description: "Explica el motivo o el contexto de la tarea."
+      placeholder: "Describe la situación, requisito o necesidad que la motiva."
+    validations:
+      required: true
+
+  - type: textarea
+    id: objective
+    attributes:
+      label: "Objetivo"
+      description: "Qué se espera conseguir con la tarea."
+      placeholder: "Ej. asegurar que el servicio pueda desplegarse sin errores de configuración."
+    validations:
+      required: true
+
+  - type: textarea
+    id: checklist
+    attributes:
+      label: "Subtareas / checklist"
+      description: "Lista los pasos a completar."
+      placeholder: |
+        - [ ] Revisar configuración actual
+        - [ ] Validar entorno de prueba
+        - [ ] Aplicar cambios
+        - [ ] Confirmar resultados
+    validations:
+      required: true
+
+  - type: textarea
+    id: validation
+    attributes:
+      label: "Validación"
+      description: "Cómo se comprobará que la tarea quedó resuelta."
+      placeholder: "Describe la prueba, comprobación o criterio para cerrar la tarea."
+
+  - type: input
+    id: owner
+    attributes:
+      label: "Responsable"
+      description: "Persona o equipo responsable."
+      placeholder: "Ej. Equipo de backend"
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: "Prioridad"
+      options:
+        - Baja
+        - Media
+        - Alta
+        - Crítica
+      default: 1
