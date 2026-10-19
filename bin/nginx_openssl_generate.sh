@@ -154,6 +154,50 @@ $KEYTOOL -import -trustcacerts -alias ${ALIAS} -file ${OPENSSL_CERTS_PATH}/${NAM
 
 cp ${OPENSSL_CERTS_PATH}/${NAMESERVER}.crt ${OPENSSL_CACERTS_PATH}/${NAMESERVER}.crt
 
+openssl s_client -connect bpmpre.ajmao.org:443 -servername bpmpre.ajmao.org -showcerts < /dev/null 2>/dev/null > ${OPENSSL_CACERTS_PATH}/bpmpre.ajmao.org.pem
+
+CERT_TMP_DIR=$(mktemp -d /tmp/bpmpre-cert.XXXXXX)
+trap 'rm -rf "${CERT_TMP_DIR}"' EXIT
+
+awk -v outdir="${CERT_TMP_DIR}" '
+  BEGIN { n = 0; out = "" }
+  {
+    if (/BEGIN CERTIFICATE/) {
+      if (out != "") {
+        close(out)
+      }
+      n++
+      out = sprintf(outdir "/cert%d.pem", n)
+      print > out
+      next
+    }
+
+    if (out != "") {
+      print > out
+      if (/END CERTIFICATE/) {
+        close(out)
+        out = ""
+      }
+    }
+  }
+  END {
+    if (n == 0) {
+      print "No certificate blocks found in input" > "/dev/stderr"
+      exit 1
+    }
+  }
+' ${OPENSSL_CACERTS_PATH}/bpmpre.ajmao.org.pem
+
+for cert in "${CERT_TMP_DIR}"/cert*.pem; do
+  if [[ -f "$cert" ]]; then
+    alias_name=$(basename "$cert" .pem)
+    $KEYTOOL -import -trustcacerts -alias "$alias_name" -file "$cert" -keystore ${OPENSSL_CERTS_PATH}/${NAMESERVER}trust.jks -storepass ${PASS} -noprompt
+  fi
+done
+
+rm -rf "${CERT_TMP_DIR}"
+trap - EXIT
+
 chmod 755 ${OPENSSL_CERTS_PATH}/*
 chmod 755 ${OPENSSL_CACERTS_PATH}/*
 
