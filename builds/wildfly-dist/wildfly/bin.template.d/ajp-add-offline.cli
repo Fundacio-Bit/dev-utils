@@ -1,3 +1,0 @@
-embed-server --server-config=${server.config:standalone.xml}
-/subsystem=undertow/server=default-server/ajp-listener=ajp:add(socket-binding=ajp)
-stop-embedded-server

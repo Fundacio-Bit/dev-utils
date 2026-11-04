@@ -1,0 +1,51 @@
+# filepath: /usr/local/desarrollo/Proyectos/emissors/main/settings.yaml
+# Settings configuration file in YAML format
+# __a_variable_in_this_format__ is automatically overwritten by the process. Modify at your own risk.
+# Morever, do not assign values __in_this_format__ unless you had written the code to process them.
+# Otherwise, its value will remain unchanged and could be wrong. You better assign useful values.
+
+# App Configuration Section
+app:
+  long_name: __app_long_name__
+  short_name: __app_short_name__
+  project:
+    version: "1.0"
+    tag: "1.0.0"
+    
+  domain_name_array: &domain
+    - fundaciobit
+    - org
+  
+  domain_name: *domain
+  domain_name_order: asc
+  domain_name_separator: "."
+
+  package_name: *domain
+  package_name_order: desc
+  package_name_separator: "."
+
+  package_path: *domain
+  package_path_order: desc
+  package_path_separator: "/"
+
+  service_array: &service
+    - name: main
+      version: "1.0.0"
+    - name: keycloak
+      version: "24.0.1"
+    - name: emiserv
+      version: "2.0.5"
+    - name: emiservbackoffice
+      version: "1.0.0"
+    - name: emiservcedent
+      version: "2.0.0"
+
+  service_name_version: *service
+  service_name_version_order: asc
+  service_name_version_separator: "/"
+
+docker:
+  custom_username_on_install: changeit
+  custom_userid : 1000
+  file_maintainer: "Govern de les Illes Balears <support@caib.es>"
+

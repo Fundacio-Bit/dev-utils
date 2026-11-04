@@ -36,11 +36,13 @@ echo ""
 
 # Taking values from .env file
 
-source $PROJECT_PATH/bin/lib_string_utils.sh 
-source $PROJECT_PATH/bin/lib_env_utils.sh
+LIB_PATH=$PROJECT_PATH/bin/lib
 
-lib_env_utils.loadenv ${PROJECT_PATH}
-echo ""
+for lib in $LIB_PATH/lib*.sh; do
+    source ${lib}
+done
+
+# Taking values from .env file
 
 isLinux=$(lib_env_utils.check_os)
 echo $isLinux

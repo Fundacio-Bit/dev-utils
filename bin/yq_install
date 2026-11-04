@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+
+#### Description: Installs yq.
+#### Written by: Guillermo de Ignacio - gdeignacio on 04-2021
+
+
+# Revision 2026-06-01
+
+###################################
+###     YAML INSTALL UTILS      ###
+###################################
+
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+if [[ "${TRACE-0}" == "1" ]]; then
+    set -o xtrace
+fi
+
+if [[ "${1-}" =~ ^-*h(elp)?$ ]]; then
+    echo 'Usage: ./yq_install
+
+    Installs YQ.
+
+'
+    exit
+fi
+
+echo ""
+PROJECT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd .. && pwd )"
+echo "Project path at $PROJECT_PATH"
+echo ""
+echo "[$(date +"%Y-%m-%d %T")] Installing ssh..."
+echo ""
+
+LIB_PATH=$PROJECT_PATH/bin/lib
+
+for lib in $LIB_PATH/lib*.sh; do
+    source ${lib}
+done
+
+isLinux=$(lib_env_utils.check_os)
+echo $isLinux
+echo ""
+
+
+if [[ $(lib_yaml_utils.check_yaml) == "/dev/null" ]]; then
+
+    if [[ $isLinux -eq 1 ]]; then
+        sudo snap install yq 
+    else
+        echo ""
+        echo "yq should be installed manually"
+        echo ""
+    fi
+
+else
+
+    echo "yq installed at $(lib_yaml_utils.check_yaml)"
+
+fi

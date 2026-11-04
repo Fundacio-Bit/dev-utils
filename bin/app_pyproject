@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+
+#### Description: Creates custom pyproject.toml files from template
+#### Written by: Guillermo de Ignacio - gdeignacio on 01-2023
+
+### Revision 2026-06-30
+
+######################################
+###   SETUP FROM TEMPLATE UTILS    ###
+######################################
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+if [[ "${TRACE-0}" == "1" ]]; then
+    set -o xtrace
+fi
+
+if [[ "${1-}" =~ ^-*h(elp)?$ ]]; then
+    echo 'Usage: ./app_pyproject
+
+Creating custom pyproject.toml files from template
+
+'
+    exit
+fi
+
+echo ""
+PROJECT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd .. && pwd )"
+echo "Project path at $PROJECT_PATH"
+echo ""
+echo "[$(date +"%Y-%m-%d %T")] Setting .template files..."
+echo ""
+
+TEMPLATE_FILE=""
+SETTINGS_FILE=""
+SETTINGS_PROJECT_NAME=$(basename $PROJECT_PATH)
+
+main(){
+
+    TEMPLATE_FILE=pyproject.toml.template
+    SETTINGS_FILE=pyproject.toml
+
+    if [[ -f "$TEMPLATE_FILE" ]]; then
+        echo "Found $TEMPLATE_FILE"  
+        if [[ -f "$SETTINGS_FILE" ]]; then
+            TIMESTAMP=`date +%Y-%m-%d_%H-%M-%S`
+            SETTINGS_FILE_BACKUP=${SETTINGS_FILE}.${TIMESTAMP}.backup
+            echo "Backing up old $SETTINGS_FILE to $SETTINGS_FILE_BACKUP"
+            mv $SETTINGS_FILE $SETTINGS_FILE_BACKUP
+        fi
+        echo "Transforming filename from $TEMPLATE_FILE to $SETTINGS_FILE"
+        cp $TEMPLATE_FILE $SETTINGS_FILE
+
+        LONG_PROJECT_NAME=$(basename $PROJECT_PATH)
+        echo "Replacing long project name in $SETTINGS_FILE"
+        SHORT_PROJECT_NAME=$(echo "$LONG_PROJECT_NAME" | cut -d'-' -f1 | cut -c1-3)
+        sed -i "s/__app_long_name__/$LONG_PROJECT_NAME/g" $SETTINGS_FILE
+        sed -i "s/__app_short_name__/$SHORT_PROJECT_NAME/g" $SETTINGS_FILE
+        
+    else
+        echo "No $TEMPLATE_FILE found, skipping..."
+    fi
+    echo ""
+    
+}
+
+main "$@"

@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+#### Description: Application launcher script
+#### Written by: Guillermo de Ignacio - gdeignacio on 10-2026
+
+### Revision 2026-10-01
+
+##############################
+###   SETUP ENV VALUES     ###
+##############################
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+if [[ "${TRACE-0}" == "1" ]]; then
+    set -o xtrace
+fi
+
+if [[ "${1-}" =~ ^-*h(elp)?$ ]]; then
+    echo 'Usage: ./app_setenv
+
+Creates an .env file from xx_XXenv files in alpabethical order
+
+'
+    exit
+fi
+
+echo ""
+PROJECT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd .. && pwd )"
+echo "Project path at $PROJECT_PATH"
+echo ""
+echo "[$(date +"%Y-%m-%d %T")] Getting to create folder..."
+echo ""
+
+LIB_PATH=$PROJECT_PATH/bin/lib
+
+for lib in $LIB_PATH/lib*.sh; do
+    source ${lib}
+done
+
+$PROJECT_PATH/.venv/bin/python $PROJECT_PATH/scripts/hello.py

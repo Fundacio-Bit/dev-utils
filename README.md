@@ -1,169 +1,212 @@
-# dev-utils
+# Pinbal Template
 
-Env settings and command line tools for R development. Rscript, Openjdk &amp; maven.
+## Descripción general
 
-## Getting Started
+Este repositorio no es una aplicación monolítica con una estructura tipo `src/`. Es una plantilla base para herramientas, utilidades y automatización de entorno, pensada para varios servicios y componentes que se ejecutan de forma independiente.
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+La idea del proyecto es mantener una base común de configuración, generación de variables de entorno y utilidades operativas, pero con un criterio moderno de servicio autónomo:
 
+- cada servicio vive en su propia carpeta
+- cada servicio tiene su propio descriptor y configuración
+- la raíz del proyecto se reserva para utilidades compartidas, scripts y configuración base
+- no se usa un “supercompose” ni una única carpeta que mezcle todo
 
-### Prerequisites
+## Propósito
 
-* Ubuntu, Debian or CentOS operating system
-* A user account with sudo privileges
-* Command-line/terminal (CTRL-ALT-T or Applications menu > Accessories > Terminal)
+El proyecto sirve para:
 
-### Installing
----
+- centralizar la configuración del entorno en `settings.yaml`
+- generar variables de entorno desde YAML hacia `.env`
+- proporcionar scripts Bash y Python reutilizables
+- soportar la preparación de infraestructura local y servicios auxiliares
+- permitir la evolución hacia un modelo por microservicios o por componentes
 
-Clone this repository on your local machine.
+## Estructura actual
 
-```bash
-git clone https://github.com/Fundacio-Bit/dev-utils.git
-
-# Forking this repository for specific purpose app is recommended
+```text
+pinbal-template/
+├── .env
+├── .venv/
+├── README.md
+├── pyproject.toml
+├── settings.yaml
+├── settings.yaml.template
+├── bin/
+│   ├── app_clearenvbackup
+│   ├── app_launcher
+│   ├── app_services
+│   ├── app_setenv
+│   ├── app_settings
+│   ├── install
+│   ├── python_setup
+│   ├── uv_setup
+│   ├── yq_install
+│   ├── lib/
+│   │   ├── lib_env_utils.sh
+│   │   ├── lib_stack_utils.sh
+│   │   ├── lib_string_utils.sh
+│   │   └── lib_yaml_utils.sh
+│   └── test/
+│       ├── test_env_utils.sh
+│       ├── test_setup.sh
+│       ├── test_string_utils.sh
+│       └── test_yaml_utils.sh
+├── scripts/
+│   ├── __init__.py
+│   └── hello.py
+├── tests/
+│   └── test_hello.py
+├── data/
+│   └── ...
+└── ...
 ```
 
-## Setting environment values
----
+## Carpetas clave
 
-Environment values are preconfigured. See ./settings.template.d folder.
+### `bin/`
+Contiene la lógica operativa del entorno y las utilidades de bootstrap.
 
+Incluye:
 
-### Generate local settings values from template
----
+- `app_settings`: crea o inicializa `settings.yaml` desde la plantilla
+- `app_setenv`: genera `.env` a partir de `settings.yaml`
+- `app_clearenvbackup`: limpieza de backups generados por el entorno
+- `install`, `python_setup`, `uv_setup`, `yq_install`: ayuda de instalación y preparación del entorno
+- `lib/`: librerías compartidas de entorno, strings y YAML
+- `test/`: validaciones del sistema y de utilidades
 
-1. Execute [bin/app_settings.sh](./bin/app_settings.sh) script to create settings folder and .template files will be copied into. If a previous version exists will be backed up.
+### `scripts/`
+Es el punto real de lógica Python del proyecto.
 
-    ```bash
-    bin/app_settings.sh
-    ```
+Actualmente incluye scripts reutilizables y utilidades ejecutables, como `hello.py`.
 
-2. Optionally execute [bin/app_clearenvbackup.sh](./bin/app_clearenvbackup.sh) to clean previous .backup files in settings folder.
+El descriptor del proyecto en [pyproject.toml](pyproject.toml) usa esta carpeta como paquete Python, que es coherente con la estructura actual del repositorio.
 
-     ```bash
-    bin/app_clearenvbackup.sh
-    ```
+### `tests/`
+Contiene pruebas del proyecto, con foco en validación de comportamiento y validación básica del entorno.
 
-3. Set app name by executing [bin/app_setappname.sh] (bin/app_setappname.sh). Set parameters codapp and app to long application name and short application name respectively.
+### `data/`
+Es la zona de almacenamiento persistente para datos del entorno, logs, secretos, certificados y volúmenes asociados al despliegue local.
 
-    ```bash
-    bin/app_setappname.sh --codapp=long-application-name --app=shortapplicationname
-    ```
-    Repeat this step every time app_settings have been executed. Otherwise app name will take default values.
+## Descriptor del proyecto
 
-### Update .env settings values
----
+En este repositorio, el archivo principal de definición del proyecto es:
 
-Once you have updated local files
+- `pyproject.toml`
 
-1. Execute [bin/app_setenv.sh](./bin/app_setenv.sh) to create an .env file and values configured in settings folder will take effect.
-    
-    ```bash
-    bin/app_setenv.sh
-    ```
+Ese archivo funciona como descriptor del proyecto Python y define:
 
+- nombre del proyecto
+- versión
+- descripción
+- requisitos de Python
+- dependencias
+- scripts ejecutables
+- herramientas de calidad (pytest, ruff, mypy)
+- configuración de empaquetado
 
-2. You don't need to execute bin/lib_xxx_utils.sh by yourself. These scripts are sourced from others for read and export values from .env file, and should be updated with care. Sourced scripts are
-    * [bin/lib_env_utils.sh](bin/lib_env_utils.sh)
-    * [bin/lib_string_utils.sh](bin/lib_string_utils.sh)
+Es el descriptor adecuado para este repositorio, porque aquí no hay una aplicación Java/Maven ni una carpeta `src/`; la estructura real es de utilidades y scripts del entorno.
 
+## Configuración central
 
-### Settings files contents in detail
----
+El origen de configuración del entorno es:
 
-* Values in ${some_value} format are previously configured.
-* All vars in a file have a distinctive prefix except 200_jdk, 300_mvn, 400_jboss files.
+- `settings.yaml`
+- `settings.yaml.template`
 
-1. Edit [./settings/100_app](./settings.template.d/100_app.template) file and check variable values as shown
+La idea de trabajo es:
 
-    ```bash
-    LONG_APP_NAME=long-app-name
-    SHORT_APP_NAME=short-app-name
-    ```
+1. ajustar `settings.yaml`
+2. ejecutar `app_settings` si hace falta regenerar la base
+3. ejecutar `app_setenv` para generar `.env`
+4. reutilizar las variables de entorno desde scripts, Docker y automatización
 
+## Filosofía de servicios
 
-2. Edit [./settings/200_jdk](./settings.template.d/200_jdk.template) file. These values set default Java Home and installation target. **The environment scope is local to your script**
+Este repositorio apunta a un diseño orientado a servicios, no a un único “main” que lo contenga todo.
 
-    By default, JDK version is 11. See [./settings.template.d/200_jdk.template](./settings.template.d/200_jdk.template) to find some examples of other versions downloading. Also, default target is located at project path dir.
+El patrón recomendado es:
 
-    ```bash
-    JDK_BASE_PATH=${APP_PROJECT_PATH}/java
+- un servicio = una carpeta propia
+- un servicio = su propio descriptor y configuración
+- un servicio = su propio despliegue o Dockerfile
+- la raíz del proyecto = herramientas comunes, scripts, configuración base y utilidades de soporte
 
-    JDK11_BASEURL=https://download.java.net/java/ga/jdk11/
-    JDK11_LINUX_FILE=openjdk-11_linux-x64_bin.tar.gz
-    JDK11_WINDOWS_FILE=openjdk-11_windows-x64_bin.zip
-    JDK11_TARGET=${JDK_BASE_PATH}/${APP_NAME}
-    ```
-    
-    See [bin/jdk_jdkinstall.sh](bin/jdk_jdkinstall.sh) for jdk installation.
-    Shortcut to [Installing Java Tools](#installing-java-tools) if more detail is needed.
+Ejemplo de estructura moderna:
 
+```text
+pinbal-template/
+├── infra/
+│   ├── nginx/
+│   ├── portainer/
+│   ├── pgadmin/
+│   └── shared/
+├── emiservcedent/
+├── keycloak/
+├── scripts/
+├── bin/
+├── data/
+├── settings.yaml
+├── pyproject.toml
+└── README.md
+```
 
-3. Edit [./settings/900_custom](./settings.template.d/900_custom.template) file.
+Con esto se evita acumular servicios y configuración en una sola raíz sin identidad clara.
 
-    These values set any custom value not previously included in other files, like PATH **The environment scope is local to your script**
+## Dependencias principales
 
-    ```bash
-    # Custom section
-    # Use this file for custom app settings
+El proyecto usa Python 3.11 y actualmente trabaja con:
 
-    # End custom section
+- PyYAML
+- python-dotenv
+- pytest
+- ruff
+- mypy
 
-    # path update section
-    PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH
-    # end path update section
-    ```
+## Flujo recomendado
 
-    **Actual values could be different than above once files in setting folder had been edited. Take these only as an example.**
+### Inicialización
 
-4. Preconfigured values are stored in settings folder and can be used *as is* or locally modified at your discretion
-Although is possible to config any type of parameter, passwords should never be set at settings.template.d folder. *All changes will be committed against repo*. Always set critical data at settings local folder and set permission if needed.
+```bash
+cd /usr/local/desarrollo/Proyectos/emissors/pinbal-template
+./bin/app_settings
+./bin/app_setenv
+```
 
+### Validación
 
+```bash
+cd /usr/local/desarrollo/Proyectos/emissors/pinbal-template
+python -m pytest
+```
 
+### Ejecutar un script Python disponible
 
-## Run
+```bash
+cd /usr/local/desarrollo/Proyectos/emissors/pinbal-template
+python -m scripts.hello
+```
 
----
+## Convenciones
 
-1. Clone this repository on your local machine if you didn't yet. 
+- `settings.yaml` es la fuente editada por el usuario
+- `.env` se considera artefacto generado
+- la raíz del proyecto almacena utilidades y configuración compartida
+- cada servicio nuevo debe vivir en una carpeta propia
+- no se deben mezclar artefactos de diferentes servicios en la misma carpeta raíz sin criterio
 
-    ```bash
-    git clone https://github.com/Fundacio-Bit/dev-utils.git
-    ```
+## Seguridad
 
+Antes de usar este repositorio en entornos reales, revisa:
 
-2. Check preconfigured values and change them as explained above if needed.
+- certificados y claves TLS
+- secretos de acceso
+- variables sensibles en `.env`
+- permisos sobre `data/`
+- puertos y hosts del entorno donde se vaya a desplegar
 
+## Resumen
 
-3. Run [app_setenv](./bin/app_setenv.sh) script. It generates an .env file from settings folder content to be allocated in main folder. When loading env variables, this file will be used as input. Repeat steps 2 and 3 as times as you need.
+Pinbal Template es una base reutilizable para un ecosistema de servicios y utilidades, con una configuración centralizada y un enfoque modular. La estructura real del repositorio refleja una organización práctica: herramientas en raíz, scripts en `scripts/`, configuración en YAML y un descriptor Python en `pyproject.toml`.
 
-    ```bash
-    ./bin/app.setenv.sh
-    ```
-    **Please remember run after edit settings. Otherwise, .env will remain unmodified.**
-
-### Installing java tools
-
----
-
-1. Optionally, run [jdkinstall](./bin/jdk_jdkinstall.sh) script. It downloads a tar.gz file and inflates into preconfigured target. See ./settings/200_jdk file. If jdk version is lower than 9, jdk platform must be manually installed.
-
-    ```bash
-    ./bin/jdk_jdkinstall.sh
-    ```
-
-
----
-## Authors
-
-* **gdeignacio**  - [gdeignacio](https://github.com/gdeignacio)
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
-
-## Acknowledgments
-
-
+La evolución natural del proyecto es separar cada servicio en su propia carpeta, manteniendo la raíz como soporte compartido y no como una “aplicación única”.

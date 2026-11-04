@@ -5,6 +5,7 @@
 #### WARNING: Check if DOCKER_CUSTOM_USERNAME is set. See settings/500_docker file
 
 # Revision 2024-08-01
+# Revision 2026-10-22
 
 ###################################
 ###   DOCKER INSTALL UTILS      ###
@@ -34,10 +35,13 @@ echo ""
 echo "[$(date +"%Y-%m-%d %T")] Installing docker..."
 echo ""
 
-# Taking values from .env file
+LIB_PATH=$PROJECT_PATH/bin/lib
 
-source $PROJECT_PATH/bin/lib_string_utils.sh 
-source $PROJECT_PATH/bin/lib_env_utils.sh
+for lib in $LIB_PATH/lib*.sh; do
+    source ${lib}
+done
+
+# Taking values from .env file
 
 lib_env_utils.loadenv ${PROJECT_PATH}
 echo ""
@@ -86,7 +90,7 @@ if [[ $isLinux -eq 1 ]]; then
 
     sudo apt-get update
 
-    sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+    sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugindocker-compose-plugin
 
     sudo docker run hello-world
 
