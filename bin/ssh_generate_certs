@@ -1,0 +1,95 @@
+#!/usr/bin/env bash
+
+### Description: Script to generate SSL certificates for Nginx using OpenSSL and Keytool
+### Usage: ./ssh_generate_certs
+### This script generates a CA certificate, a server certificate signed by the CA, and creates a PKCS12 file for use with Elytron and a PEM file for Nginx. 
+### It also creates a truststore for Wildfly.
+### The script uses environment variables defined in the .env file for configuration.
+### The generated certificates and keys are stored in the ${PROJECT_PATH}/../data/etc/ssl/certs
+
+#### Written by: Guillermo de Ignacio - gdeignacio on 04-2021
+
+# Revision 2024-08-01
+# Revision 2026-10-22
+# Revision 2026-10-23
+
+###################################
+###   SSH GENERATE CERTS        ###
+###################################
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+if [[ "${TRACE-0}" == "1" ]]; then
+    set -o xtrace
+fi
+
+if [[ "${1-}" =~ ^-*h(elp)?$ ]]; then
+    echo 'Usage: ./ssh_generate_certs
+
+Generates SSH certificates
+
+'
+    exit
+fi
+
+echo ""
+PROJECT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd .. && pwd )"
+echo "Project path at $PROJECT_PATH"
+echo ""
+echo "[$(date +"%Y-%m-%d %T")] Installing ssh..."
+echo ""
+
+LIB_PATH=$PROJECT_PATH/bin/lib
+
+for lib in $LIB_PATH/lib*.sh; do
+    source ${lib}
+done
+
+# Taking values from .env file
+
+lib_env_utils.loadenv ${PROJECT_PATH}
+echo ""
+
+set_openssl_variables(){
+
+    export OPENSSL_CERTS_PATH=${PROJECT_PATH}/../data/etc/ssl/certs
+    export OPENSSL_CACERTS_PATH=${PROJECT_PATH}/../data/etc/ssl/cacerts
+    
+}
+
+set_openssl_folders(){
+
+    mkdir -p ${OPENSSL_CERTS_PATH}
+    mkdir -p ${OPENSSL_CACERTS_PATH}
+
+}
+
+
+
+export OPENSSL_CERTS_PATH=${PROJECT_PATH}/../data/etc/ssl/certs
+
+mkdir -p ${OPENSSL_CERTS_PATH}
+
+
+
+main(){
+    
+    isLinux=$(lib_env_utils.check_os)
+    echo $isLinux
+
+    if [[ $isLinux -eq 1 ]]; then
+        echo "Installing ssh on Linux"
+        sudo apt-get update
+        get_ca
+        install_ssh
+    else
+        echo ""
+        echo "SSH should be installed manually"
+        echo ""
+    fi
+
+}
+
+main "$@"

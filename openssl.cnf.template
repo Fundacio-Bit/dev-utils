@@ -1,0 +1,28 @@
+# This is the default openssl configuration file.
+.include /etc/ssl/openssl.cnf
+
+# Custom configuration for generating SSL certificates
+
+[ req ]
+distinguished_name = req_distinguished_name
+req_extensions     = v3_req
+prompt             = no
+
+[ req_distinguished_name ]
+
+C = ES
+ST = ILLES BALEARS
+L = PALMA
+O = FUNDACIO BIT
+OU = GOVERN DIGITAL
+CN = CERTIFICAT DE PREPRODUCCIO DE LA FUNDACIO BIT
+
+serialNumber = S0711001H
+emailAddress = pinbal@fundaciobit.org
+
+[ v3_req ]
+subjectAltName = @alt_names
+
+[ alt_names ]
+DNS.1 = fundaciobit.org
+DNS.2 = *.fundaciobit.org

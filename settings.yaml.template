@@ -49,3 +49,15 @@ docker:
   custom_userid : 1000
   file_maintainer: "Govern de les Illes Balears <support@caib.es>"
 
+data:
+  base_path: ../data
+  subfolders:
+    - etc
+    - var
+
+ssl:
+  cert_path: /etc/ssl/certs
+  key_path: /etc/ssl/private
+  cert_file: __cert_file__
+  key_file: __key_file__
+  

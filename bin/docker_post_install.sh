@@ -49,21 +49,24 @@ echo $isLinux
 
 if [[ $isLinux -eq 1 ]]; then
 
-    sudo groupadd docker
-    sudo usermod -aG docker ${DOCKER_CUSTOM_USERNAME_ON_INSTALL}
+    if ! getent group docker >/dev/null; then
+        sudo groupadd docker
+    fi
 
-    sudo systemctl enable docker.service
-    sudo systemctl enable containerd.service
-    
-    #sudo apt-get install docker.io docker-compose zip
-    #sudo systemctl enable docker
-    #sudo systemctl start docker
-    #sudo systemctl status docker
-    
-    # sudo useradd -p $(openssl passwd -1 docker) docker -g docker
-    # sudo usermod -a -G docker emiserv
-    # sudo usermod -a -G docker ${DOCKER_CUSTOM_USERNAME_ON_INSTALL}
+    if getent group docker >/dev/null; then
+        sudo usermod -aG docker "${DOCKER_CUSTOM_USERNAME_ON_INSTALL}"
+    else
+        echo "Group 'docker' does not exist; skipping user membership update"
+    fi
 
+    for service in docker.service containerd.service; do
+        if systemctl cat "$service" >/dev/null 2>&1; then
+            sudo systemctl enable "$service"
+        else
+            echo "Systemd unit '$service' does not exist; skipping enable"
+        fi
+    done
+    
 else
     echo ""
     echo "Docker should be installed manually"

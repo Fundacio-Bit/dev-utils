@@ -52,16 +52,19 @@ echo $isLinux
 if [[ $isLinux -eq 1 ]]; then
 
     sudo apt-get update
-    sudo apt-get upgrade
     
     sudo apt-get remove \
         docker \
         docker.io \
         docker-compose \
+        docker-compose-v2 \
+        docker-doc \
+        docker-buildx \
+        podman-docker \
         containerd \
         runc
 
-    echo "remove docker docker.io docker-compose containerd runc"
+    echo "remove docker docker.io docker-compose docker-compose-v2 docker-doc docker-buildx podman-docker containerd runc"
 
     sudo apt-get remove docker-engine
     echo "remove docker-engine"
@@ -90,7 +93,7 @@ if [[ $isLinux -eq 1 ]]; then
 
     sudo apt-get update
 
-    sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugindocker-compose-plugin
+    sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
     sudo docker run hello-world
 
@@ -103,6 +106,5 @@ else
     echo "Docker should be installed manually"
     echo ""
 fi
-
 
 

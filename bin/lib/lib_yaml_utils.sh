@@ -291,6 +291,33 @@ lib_yaml_utils.setenv_docker_values(){
 }
 
 
+lib_yaml_utils.setenv_data_values(){
+
+    local yaml_file=$1
+    local env_file=$2
+
+    lib_yaml_utils.value_to_env "DATA_BASE_PATH" "$(lib_yaml_utils.get_yaml_key "$yaml_file" "data.base_path" "../data")" >> "$env_file"
+    yaml_array=$(lib_yaml_utils.get_yaml_key "$yaml_file" "data.subfolders" "")
+    string_array=$(lib_yaml_utils.yaml_array_to_string "$yaml_array")
+    lib_yaml_utils.value_to_env "DATA_SUBFOLDERS" "${string_array}" >> "$env_file"
+
+}
+
+lib_yaml_utils.setenv_ssl_values(){
+
+    local yaml_file=$1
+    local env_file=$2
+
+    lib_yaml_utils.value_to_env "SSL_CERT_PATH" "$(lib_yaml_utils.get_yaml_key "$yaml_file" "ssl.cert_path" "/etc/ssl/certs")" >> "$env_file"
+    lib_yaml_utils.value_to_env "SSL_KEY_PATH" "$(lib_yaml_utils.get_yaml_key "$yaml_file" "ssl.key_path" "/etc/ssl/private")" >> "$env_file"
+    lib_yaml_utils.value_to_env "SSL_CERT_FILE" "$(lib_yaml_utils.get_yaml_key "$yaml_file" "ssl.cert_file" "__cert_file__")" >> "$env_file"
+    lib_yaml_utils.value_to_env "SSL_KEY_FILE" "$(lib_yaml_utils.get_yaml_key "$yaml_file" "ssl.key_file" "__key_file__")" >> "$env_file"
+
+}
+
+
+
+
 ##################################################################################################################################
 ##################################################################################################################################
 
@@ -360,6 +387,7 @@ lib_yaml_utils.yaml_to_env(){
         lib_yaml_utils.setenv_app_values "$yaml_file" "$env_file"
         lib_yaml_utils.setenv_app_expanded_values "$yaml_file" "$env_file"
         lib_yaml_utils.setenv_docker_values "$yaml_file" "$env_file"
+        lib_yaml_utils.setenv_data_values "$yaml_file" "$env_file"
         # lib_yaml_utils.setenv_python_values "$yaml_file" "$env_file"
         # lib_yaml_utils.setenv_python_scripts_values "$yaml_file" "$env_file"
         # lib_yaml_utils.setenv_python_app_values "$yaml_file" "$env_file"

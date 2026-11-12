@@ -31,3 +31,7 @@ dist/
 
 # uv / tool cache
 .uv-cache/
+
+settings.yaml
+openssl.cnf
+
